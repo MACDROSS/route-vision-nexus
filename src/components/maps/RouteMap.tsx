@@ -1,8 +1,8 @@
 
-import { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
+import { useEffect, useState, useRef } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Icon } from 'leaflet';
+import { Icon, LatLngExpression } from 'leaflet';
 import { Route, Vehicle, RoutePoint, RouteMapProps } from './types';
 
 // Fix for default marker icons in Leaflet with React
@@ -20,6 +20,16 @@ const defaultIcon = new Icon({
   popupAnchor: [1, -34],
   shadowSize: [41, 41]
 });
+
+// This component updates the map view when center or zoom changes
+const MapView = ({ center, zoom }: { center: LatLngExpression, zoom: number }) => {
+  const map = useMap();
+  useEffect(() => {
+    map.setView(center, zoom);
+  }, [center, zoom, map]);
+  
+  return null;
+};
 
 const RouteMap = ({
   routes = [],
@@ -52,11 +62,12 @@ const RouteMap = ({
 
       {/* Map Container */}
       <MapContainer 
-        center={centerCoordinates} 
-        zoom={zoom} 
         style={{ height: "100%", width: "100%", borderRadius: "0.5rem" }}
         className={`z-0 ${!mapReady ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
       >
+        {/* Use the MapView component to control center and zoom */}
+        <MapView center={centerCoordinates} zoom={zoom} />
+        
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
