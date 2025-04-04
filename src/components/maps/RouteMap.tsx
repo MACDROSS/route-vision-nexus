@@ -3,46 +3,12 @@ import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Icon } from 'leaflet';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Route, Vehicle, RoutePoint, RouteMapProps } from './types';
 
 // Fix for default marker icons in Leaflet with React
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
 import iconUrl from 'leaflet/dist/images/marker-icon.png';
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
-
-// Define types for our map component
-interface Vehicle {
-  id: number;
-  name: string;
-  position: [number, number];
-  status: "delivering" | "returning" | "idle";
-  packages: number;
-}
-
-interface RoutePoint {
-  id: number;
-  name: string;
-  position: [number, number];
-  type: "pickup" | "delivery";
-}
-
-interface Route {
-  id: number;
-  name: string;
-  coordinates: [number, number][];
-  color: string;
-  active?: boolean;
-}
-
-interface RouteMapProps {
-  routes?: Route[];
-  vehicles?: Vehicle[];
-  points?: RoutePoint[];
-  centerCoordinates?: [number, number];
-  zoom?: number;
-  height?: string;
-  className?: string;
-}
 
 // Set up the default icon for markers
 const defaultIcon = new Icon({
@@ -59,7 +25,7 @@ const RouteMap = ({
   routes = [],
   vehicles = [],
   points = [],
-  centerCoordinates = [40.7128, -74.0060], // Default to NYC coordinates
+  centerCoordinates = [40.7128, -74.0060] as [number, number], // Default to NYC coordinates
   zoom = 12,
   height = "100%",
   className = "",

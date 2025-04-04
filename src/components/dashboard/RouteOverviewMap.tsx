@@ -2,6 +2,7 @@
 import { useRef, useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import RouteMap from "@/components/maps/RouteMap";
+import { Route, Vehicle } from "@/components/maps/types";
 
 // Mock data for the map
 const mockMapData = {
@@ -14,7 +15,7 @@ const mockMapData = {
         [40.7300, -73.9950],
         [40.7400, -73.9850],
         [40.7500, -73.9750]
-      ],
+      ] as [number, number][],
       color: "#0ea5e9"
     },
     {
@@ -25,7 +26,7 @@ const mockMapData = {
         [40.7000, -74.0100],
         [40.6900, -74.0200],
         [40.6800, -74.0300]
-      ],
+      ] as [number, number][],
       color: "#14b8a6"
     },
     {
@@ -36,33 +37,33 @@ const mockMapData = {
         [40.7150, -73.9800],
         [40.7200, -73.9600],
         [40.7250, -73.9400]
-      ],
+      ] as [number, number][],
       color: "#8b5cf6"
     }
-  ],
+  ] as Route[],
   vehicles: [
     {
       id: 1,
       name: "Truck 101",
-      position: [40.7300, -73.9950],
-      status: "delivering",
+      position: [40.7300, -73.9950] as [number, number],
+      status: "delivering" as const,
       packages: 12
     },
     {
       id: 2,
       name: "Truck 102",
-      position: [40.6900, -74.0200],
-      status: "delivering",
+      position: [40.6900, -74.0200] as [number, number],
+      status: "delivering" as const,
       packages: 8
     },
     {
       id: 3,
       name: "Truck 103",
-      position: [40.7200, -73.9600],
-      status: "returning",
+      position: [40.7200, -73.9600] as [number, number],
+      status: "returning" as const,
       packages: 3
     }
-  ]
+  ] as Vehicle[]
 };
 
 const RouteOverviewMap = () => {

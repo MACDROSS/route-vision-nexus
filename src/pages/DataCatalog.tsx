@@ -5,6 +5,7 @@ import DataCatalogTable from "@/components/data-catalog/DataCatalogTable";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import RouteMap from "@/components/maps/RouteMap";
+import { Route, RoutePoint } from "@/components/maps/types";
 
 // Mock data for the data catalog map view
 const mockGeoData = {
@@ -17,7 +18,7 @@ const mockGeoData = {
         [40.7300, -73.9950],
         [40.7400, -73.9850],
         [40.7500, -73.9750]
-      ],
+      ] as [number, number][],
       color: "#0ea5e9"
     },
     {
@@ -28,30 +29,30 @@ const mockGeoData = {
         [40.7000, -74.0100],
         [40.6900, -74.0200],
         [40.6800, -74.0300]
-      ],
+      ] as [number, number][],
       color: "#14b8a6"
     }
-  ],
+  ] as Route[],
   points: [
     {
       id: 1,
       name: "Main Warehouse",
-      position: [40.7128, -74.0060],
-      type: "pickup"
+      position: [40.7128, -74.0060] as [number, number],
+      type: "pickup" as const
     },
     {
       id: 2,
       name: "Delivery Point 1",
-      position: [40.7500, -73.9750],
-      type: "delivery"
+      position: [40.7500, -73.9750] as [number, number],
+      type: "delivery" as const
     },
     {
       id: 3,
       name: "Delivery Point 2",
-      position: [40.6800, -74.0300],
-      type: "delivery"
+      position: [40.6800, -74.0300] as [number, number],
+      type: "delivery" as const
     }
-  ]
+  ] as RoutePoint[]
 };
 
 const DataCatalog = () => {
