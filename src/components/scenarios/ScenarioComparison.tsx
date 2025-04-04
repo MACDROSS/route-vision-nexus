@@ -7,8 +7,27 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Clock, TrendingUp, BadgeDollarSign, PlusCircle } from "lucide-react";
 
+// Define types for our data structure
+interface MetricDataPoint {
+  month: string;
+  value: number;
+}
+
+interface ScenarioMetrics {
+  deliveryTime: MetricDataPoint[];
+  fuelConsumption: MetricDataPoint[];
+  operationalCosts: MetricDataPoint[];
+}
+
+interface Scenario {
+  id: number;
+  name: string;
+  type: "baseline" | "scenario";
+  metrics: ScenarioMetrics;
+}
+
 // Mock data for scenarios
-const scenariosData = [
+const scenariosData: Scenario[] = [
   {
     id: 1,
     name: "Current Operations",
@@ -104,17 +123,24 @@ const scenariosData = [
   },
 ];
 
+type MetricKey = keyof ScenarioMetrics;
+
+interface ChartDataPoint {
+  month: string;
+  [key: string]: string | number | undefined;
+}
+
 // Transform data for charts
-const transformDataForChart = (scenarios, metric) => {
+const transformDataForChart = (scenarios: Scenario[], metric: MetricKey): ChartDataPoint[] => {
   // Get all unique months from all scenarios
-  const allMonths = new Set();
+  const allMonths = new Set<string>();
   scenarios.forEach(scenario => {
     scenario.metrics[metric].forEach(item => allMonths.add(item.month));
   });
   
   // Create data array with all months and all scenario values
   return Array.from(allMonths).map(month => {
-    const dataPoint = { month };
+    const dataPoint: ChartDataPoint = { month };
     
     scenarios.forEach(scenario => {
       const metricData = scenario.metrics[metric].find(item => item.month === month);
@@ -131,18 +157,18 @@ const transformDataForChart = (scenarios, metric) => {
 };
 
 const ScenarioComparison = () => {
-  const [selectedScenarios, setSelectedScenarios] = useState([1, 3]);
-  const [activeMetric, setActiveMetric] = useState("deliveryTime");
+  const [selectedScenarios, setSelectedScenarios] = useState<number[]>([1, 3]);
+  const [activeMetric, setActiveMetric] = useState<MetricKey>("deliveryTime");
   
   const scenariosToCompare = scenariosData.filter(s => selectedScenarios.includes(s.id));
   
-  const metricLabels = {
+  const metricLabels: Record<MetricKey, string> = {
     deliveryTime: "Average Delivery Time (min)",
     fuelConsumption: "Fuel Consumption (gal)",
     operationalCosts: "Operational Costs ($)",
   };
   
-  const metricIcons = {
+  const metricIcons: Record<MetricKey, JSX.Element> = {
     deliveryTime: <Clock className="h-4 w-4" />,
     fuelConsumption: <TrendingUp className="h-4 w-4" />,
     operationalCosts: <BadgeDollarSign className="h-4 w-4" />,
@@ -150,7 +176,7 @@ const ScenarioComparison = () => {
   
   const chartData = transformDataForChart(scenariosToCompare, activeMetric);
   
-  const getRandomColor = (index) => {
+  const getRandomColor = (index: number): string => {
     const colors = ['#0ea5e9', '#14b8a6', '#8b5cf6', '#f97316', '#10b981'];
     return colors[index % colors.length];
   };
@@ -188,7 +214,7 @@ const ScenarioComparison = () => {
           </div>
         </div>
         
-        <Tabs value={activeMetric} onValueChange={setActiveMetric}>
+        <Tabs value={activeMetric} onValueChange={(value) => setActiveMetric(value as MetricKey)}>
           <TabsList className="grid grid-cols-3 mb-4">
             <TabsTrigger value="deliveryTime" className="flex items-center gap-1">
               <Clock className="h-4 w-4" />
@@ -208,7 +234,7 @@ const ScenarioComparison = () => {
             <TabsContent key={metric} value={metric} className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
-                  data={transformDataForChart(scenariosToCompare, metric)}
+                  data={transformDataForChart(scenariosToCompare, metric as MetricKey)}
                   margin={{ top: 10, right: 30, left: 0, bottom: 5 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
@@ -247,7 +273,7 @@ const ScenarioComparison = () => {
               
               comparisonValue = (
                 <span className={`text-xs ${isPositive ? "text-green-500" : "text-red-500"}`}>
-                  {isPositive ? "↓" : "↑"} {Math.abs(percentage)}%
+                  {isPositive ? "↓" : "↑"} {Math.abs(parseFloat(percentage))}%
                 </span>
               );
             }
