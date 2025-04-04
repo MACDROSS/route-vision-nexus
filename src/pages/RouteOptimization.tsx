@@ -15,6 +15,90 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import RouteMap from "@/components/maps/RouteMap";
+
+// Mock data for map visualization
+const mockRoutes = [
+  {
+    id: 1,
+    name: "Downtown Express",
+    coordinates: [
+      [40.7128, -74.0060],
+      [40.7300, -73.9950],
+      [40.7400, -73.9850],
+      [40.7500, -73.9750]
+    ],
+    color: "#0ea5e9",
+    active: true
+  },
+  {
+    id: 2,
+    name: "North City Route",
+    coordinates: [
+      [40.7128, -74.0060],
+      [40.7000, -74.0100],
+      [40.6900, -74.0200],
+      [40.6800, -74.0300]
+    ],
+    color: "#10b981"
+  },
+  {
+    id: 3,
+    name: "Airport Delivery",
+    coordinates: [
+      [40.7128, -74.0060],
+      [40.7150, -73.9800],
+      [40.7200, -73.9600],
+      [40.7250, -73.9400]
+    ],
+    color: "#8b5cf6"
+  }
+];
+
+const mockVehicles = [
+  {
+    id: 1,
+    name: "Truck 101",
+    position: [40.7300, -73.9950],
+    status: "delivering",
+    packages: 12
+  },
+  {
+    id: 2,
+    name: "Van 023",
+    position: [40.6900, -74.0200],
+    status: "delivering",
+    packages: 8
+  },
+  {
+    id: 3,
+    name: "Bike 015",
+    position: [40.7200, -73.9600],
+    status: "returning",
+    packages: 3
+  }
+];
+
+const mockDeliveryPoints = [
+  {
+    id: 1,
+    name: "Downtown Office",
+    position: [40.7500, -73.9750],
+    type: "delivery"
+  },
+  {
+    id: 2,
+    name: "Central Warehouse",
+    position: [40.7128, -74.0060],
+    type: "pickup"
+  },
+  {
+    id: 3,
+    name: "Airport Hub",
+    position: [40.7250, -73.9400],
+    type: "delivery"
+  }
+];
 
 const RouteOptimization = () => {
   const [mapReady, setMapReady] = useState(false);
@@ -56,22 +140,13 @@ const RouteOptimization = () => {
             <div className="lg:col-span-3">
               <Card>
                 <CardContent className="p-0">
-                  <div className="relative h-[70vh] bg-muted">
-                    {!mapReady && (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
-                      </div>
-                    )}
-                    
-                    {mapReady && (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-center">
-                          <MapPin className="h-12 w-12 mx-auto mb-3 text-primary" />
-                          <p className="text-muted-foreground">Interactive map visualization would appear here</p>
-                          <p className="text-sm text-muted-foreground mt-2">Showing optimized delivery routes and vehicle positions</p>
-                        </div>
-                      </div>
-                    )}
+                  <div className="relative h-[70vh]">
+                    <RouteMap
+                      routes={mockRoutes}
+                      vehicles={mockVehicles}
+                      points={mockDeliveryPoints}
+                      height="70vh"
+                    />
                   </div>
                 </CardContent>
               </Card>
