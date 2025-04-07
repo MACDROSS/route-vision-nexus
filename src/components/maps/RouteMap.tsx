@@ -55,13 +55,15 @@ const RouteMap = ({
   // Make sure the marker icon is set before rendering
   useEffect(() => {
     // This ensures the icons are properly set for all markers
-    const L = require('leaflet');
-    delete L.Icon.Default.prototype._getIconUrl;
-    
-    L.Icon.Default.mergeOptions({
-      iconRetinaUrl: iconRetinaUrl.toString(),
-      iconUrl: iconUrl.toString(),
-      shadowUrl: shadowUrl.toString(),
+    // Use import instead of require in a Vite project
+    import('leaflet').then(L => {
+      delete L.Icon.Default.prototype._getIconUrl;
+      
+      L.Icon.Default.mergeOptions({
+        iconRetinaUrl: iconRetinaUrl.toString(),
+        iconUrl: iconUrl.toString(),
+        shadowUrl: shadowUrl.toString(),
+      });
     });
   }, []);
 
@@ -76,18 +78,19 @@ const RouteMap = ({
 
       {/* Map Container */}
       <MapContainer 
-        center={centerCoordinates}
-        zoom={zoom}
         style={{ height: "100%", width: "100%", borderRadius: "0.5rem" }}
         className={`z-0 ${!mapInitialized ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
         ref={mapContainerRef}
+        // Apply center and zoom via the MapView component instead of directly on MapContainer
+        center={centerCoordinates}
+        zoom={zoom}
       >
         {/* Use the MapView component to control center and zoom */}
         <MapView center={centerCoordinates} zoom={zoom} />
         
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
 
         {/* Draw routes as polylines */}
