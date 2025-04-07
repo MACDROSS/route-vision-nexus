@@ -39,6 +39,7 @@ const convertToScenariosList = () => {
 
 const Scenarios = () => {
   const [activeTab, setActiveTab] = useState("list");
+  // Correctly convert scenariosData to the expected format
   const scenariosListData = convertToScenariosList();
   
   return (
