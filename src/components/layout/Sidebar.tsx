@@ -51,11 +51,6 @@ const Sidebar = () => {
       href: "/scenarios"
     },
     {
-      icon: MoveHorizontal,
-      label: "Sort Planning",
-      href: "/sort-planning"
-    },
-    {
       icon: Factory,
       label: "Production Planning",
       href: "/production-planning"
@@ -82,6 +77,11 @@ const Sidebar = () => {
       icon: Users,
       label: "Personnel",
       href: "/personnel"
+    },
+    {
+      icon: MoveHorizontal,
+      label: "Sort Planning",
+      href: "/sort-planning"
     }
   ];
 
