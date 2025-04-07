@@ -25,8 +25,10 @@ const NavigationCard: React.FC<NavigationCardProps> = ({
     >
       <CardContent className="pt-6">
         <div className="flex flex-col items-center">
-          {icon}
-          <h3 className="text-lg font-semibold">{title}</h3>
+          <div className={`${isActive ? "text-primary" : "text-muted-foreground"}`}>
+            {icon}
+          </div>
+          <h3 className={`text-lg font-semibold ${isActive ? "text-primary" : ""}`}>{title}</h3>
           <p className="text-sm text-muted-foreground text-center mt-1">
             {description}
           </p>
@@ -52,7 +54,7 @@ const ScenarioNavigationCards: React.FC<ScenarioNavigationCardsProps> = ({
       <NavigationCard 
         title="Details" 
         description="View scenario details and configuration"
-        icon={<FileText className="h-8 w-8 mb-2 text-muted-foreground" />}
+        icon={<FileText className="h-8 w-8 mb-2" />}
         isActive={activeView === "details"}
         onClick={() => onViewChange("details")}
       />
@@ -60,7 +62,7 @@ const ScenarioNavigationCards: React.FC<ScenarioNavigationCardsProps> = ({
       <NavigationCard 
         title="Analysis" 
         description="Review performance metrics and KPIs"
-        icon={<BarChart className="h-8 w-8 mb-2 text-muted-foreground" />}
+        icon={<BarChart className="h-8 w-8 mb-2" />}
         isActive={activeView === "analysis"}
         onClick={() => onViewChange("analysis")}
       />
@@ -68,7 +70,7 @@ const ScenarioNavigationCards: React.FC<ScenarioNavigationCardsProps> = ({
       <NavigationCard 
         title="Routes" 
         description="Manage and reorder route stops"
-        icon={<List className="h-8 w-8 mb-2 text-muted-foreground" />}
+        icon={<List className="h-8 w-8 mb-2" />}
         isActive={activeView === "routes"}
         onClick={() => onViewChange("routes")}
       />
@@ -76,7 +78,7 @@ const ScenarioNavigationCards: React.FC<ScenarioNavigationCardsProps> = ({
       <NavigationCard 
         title="Map View" 
         description="Visualize routes and network coverage"
-        icon={<Map className="h-8 w-8 mb-2 text-muted-foreground" />}
+        icon={<Map className="h-8 w-8 mb-2" />}
         isActive={activeView === "map"}
         onClick={() => onViewChange("map")}
       />
@@ -84,7 +86,7 @@ const ScenarioNavigationCards: React.FC<ScenarioNavigationCardsProps> = ({
       <NavigationCard 
         title="Configuration" 
         description="Modify scenario parameters and rules"
-        icon={<Settings className="h-8 w-8 mb-2 text-muted-foreground" />}
+        icon={<Settings className="h-8 w-8 mb-2" />}
         isActive={activeView === "configuration"}
         onClick={() => {
           onViewChange("configuration");

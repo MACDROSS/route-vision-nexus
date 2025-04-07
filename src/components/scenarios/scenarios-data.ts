@@ -34,6 +34,68 @@ export const scenariosData: Scenario[] = [
       ],
     },
     description: "Baseline scenario reflecting current operational metrics and performance",
+    routes: [
+      {
+        id: 1,
+        name: "Downtown Route",
+        coordinates: [
+          [40.7128, -74.0060],
+          [40.7300, -73.9950],
+          [40.7400, -73.9850],
+          [40.7500, -73.9750]
+        ],
+        color: "#0ea5e9",
+        active: true
+      },
+      {
+        id: 2,
+        name: "Airport Route",
+        coordinates: [
+          [40.7128, -74.0060],
+          [40.7050, -73.9800],
+          [40.6950, -73.9600],
+          [40.6850, -73.9400]
+        ],
+        color: "#14b8a6",
+        active: true
+      }
+    ],
+    vehicles: [
+      {
+        id: 1,
+        name: "Van 001",
+        position: [40.7300, -73.9950],
+        status: "delivering",
+        packages: 8
+      },
+      {
+        id: 2,
+        name: "Truck 012",
+        position: [40.6950, -73.9600],
+        status: "delivering",
+        packages: 14
+      }
+    ],
+    deliveryPoints: [
+      {
+        id: 1,
+        name: "Main Hub",
+        position: [40.7128, -74.0060],
+        type: "pickup"
+      },
+      {
+        id: 2,
+        name: "Office Tower",
+        position: [40.7500, -73.9750],
+        type: "delivery"
+      },
+      {
+        id: 3,
+        name: "Airport Terminal",
+        position: [40.6850, -73.9400],
+        type: "delivery"
+      }
+    ]
   },
   {
     id: 2,
@@ -66,6 +128,100 @@ export const scenariosData: Scenario[] = [
       ],
     },
     description: "Scenario with 20% larger delivery fleet to reduce delivery times",
+    routes: [
+      {
+        id: 1,
+        name: "Downtown Route",
+        coordinates: [
+          [40.7128, -74.0060],
+          [40.7300, -73.9950],
+          [40.7400, -73.9850],
+          [40.7500, -73.9750]
+        ],
+        color: "#0ea5e9",
+        active: true
+      },
+      {
+        id: 2,
+        name: "Airport Route",
+        coordinates: [
+          [40.7128, -74.0060],
+          [40.7050, -73.9800],
+          [40.6950, -73.9600],
+          [40.6850, -73.9400]
+        ],
+        color: "#14b8a6",
+        active: true
+      },
+      {
+        id: 3,
+        name: "Suburban Route",
+        coordinates: [
+          [40.7128, -74.0060],
+          [40.7000, -74.0200],
+          [40.6900, -74.0400],
+          [40.6800, -74.0600]
+        ],
+        color: "#8b5cf6",
+        active: true
+      }
+    ],
+    vehicles: [
+      {
+        id: 1,
+        name: "Van 001",
+        position: [40.7300, -73.9950],
+        status: "delivering",
+        packages: 8
+      },
+      {
+        id: 2,
+        name: "Truck 012",
+        position: [40.6950, -73.9600],
+        status: "delivering",
+        packages: 14
+      },
+      {
+        id: 3,
+        name: "Van 002",
+        position: [40.7000, -74.0200],
+        status: "delivering",
+        packages: 10
+      },
+      {
+        id: 4,
+        name: "Van 003",
+        position: [40.6800, -74.0600],
+        status: "delivering",
+        packages: 9
+      }
+    ],
+    deliveryPoints: [
+      {
+        id: 1,
+        name: "Main Hub",
+        position: [40.7128, -74.0060],
+        type: "pickup"
+      },
+      {
+        id: 2,
+        name: "Office Tower",
+        position: [40.7500, -73.9750],
+        type: "delivery"
+      },
+      {
+        id: 3,
+        name: "Airport Terminal",
+        position: [40.6850, -73.9400],
+        type: "delivery"
+      },
+      {
+        id: 4,
+        name: "Suburban Mall",
+        position: [40.6800, -74.0600],
+        type: "delivery"
+      }
+    ]
   },
   {
     id: 3,
@@ -98,6 +254,66 @@ export const scenariosData: Scenario[] = [
       ],
     },
     description: "Advanced routing algorithms to optimize delivery paths and reduce costs",
+    routes: [
+      {
+        id: 1,
+        name: "Optimized Downtown",
+        coordinates: [
+          [40.7128, -74.0060],
+          [40.7250, -73.9900],
+          [40.7500, -73.9750]
+        ],
+        color: "#0ea5e9",
+        active: true
+      },
+      {
+        id: 2,
+        name: "Optimized Airport",
+        coordinates: [
+          [40.7128, -74.0060],
+          [40.7000, -73.9700],
+          [40.6850, -73.9400]
+        ],
+        color: "#14b8a6",
+        active: true
+      }
+    ],
+    vehicles: [
+      {
+        id: 1,
+        name: "EV Van 001",
+        position: [40.7250, -73.9900],
+        status: "delivering",
+        packages: 10
+      },
+      {
+        id: 2,
+        name: "EV Truck 005",
+        position: [40.7000, -73.9700],
+        status: "delivering",
+        packages: 16
+      }
+    ],
+    deliveryPoints: [
+      {
+        id: 1,
+        name: "Main Hub",
+        position: [40.7128, -74.0060],
+        type: "pickup"
+      },
+      {
+        id: 2,
+        name: "Office Tower",
+        position: [40.7500, -73.9750],
+        type: "delivery"
+      },
+      {
+        id: 3,
+        name: "Airport Terminal",
+        position: [40.6850, -73.9400],
+        type: "delivery"
+      }
+    ]
   },
   {
     id: 4,
@@ -130,5 +346,89 @@ export const scenariosData: Scenario[] = [
       ],
     },
     description: "Combination of fleet expansion and optimized routing for balanced approach",
+    routes: [
+      {
+        id: 1,
+        name: "Primary Downtown",
+        coordinates: [
+          [40.7128, -74.0060],
+          [40.7250, -73.9900],
+          [40.7500, -73.9750]
+        ],
+        color: "#0ea5e9",
+        active: true
+      },
+      {
+        id: 2,
+        name: "Secondary Downtown",
+        coordinates: [
+          [40.7128, -74.0060],
+          [40.7300, -74.0000],
+          [40.7450, -73.9850]
+        ],
+        color: "#f97316",
+        active: true
+      },
+      {
+        id: 3,
+        name: "Airport Express",
+        coordinates: [
+          [40.7128, -74.0060],
+          [40.7000, -73.9700],
+          [40.6850, -73.9400]
+        ],
+        color: "#14b8a6",
+        active: true
+      }
+    ],
+    vehicles: [
+      {
+        id: 1,
+        name: "EV Van 001",
+        position: [40.7250, -73.9900],
+        status: "delivering",
+        packages: 10
+      },
+      {
+        id: 2,
+        name: "Van 008",
+        position: [40.7300, -74.0000],
+        status: "delivering",
+        packages: 12
+      },
+      {
+        id: 3,
+        name: "EV Truck 005",
+        position: [40.7000, -73.9700],
+        status: "delivering",
+        packages: 16
+      }
+    ],
+    deliveryPoints: [
+      {
+        id: 1,
+        name: "Main Hub",
+        position: [40.7128, -74.0060],
+        type: "pickup"
+      },
+      {
+        id: 2,
+        name: "Office Tower A",
+        position: [40.7500, -73.9750],
+        type: "delivery"
+      },
+      {
+        id: 3,
+        name: "Office Tower B",
+        position: [40.7450, -73.9850],
+        type: "delivery"
+      },
+      {
+        id: 4,
+        name: "Airport Terminal",
+        position: [40.6850, -73.9400],
+        type: "delivery"
+      }
+    ]
   },
 ];
