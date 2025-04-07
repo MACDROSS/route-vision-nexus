@@ -1,44 +1,311 @@
 
-// Mock data for scenarios
-export const scenarios = [
+import { Scenario } from "./types";
+
+// Sample data for scenarios with added map data
+export const scenarios: Scenario[] = [
   {
     id: 1,
-    name: "Current Operations",
-    description: "Baseline scenario with current fleet and routing",
+    name: "Baseline Network",
     type: "baseline",
-    createdAt: "2023-03-15",
-    creator: "System",
-    routes: 12,
-    vehicles: 32,
+    description: "Current network configuration with existing distribution centers and routes.",
+    metrics: {
+      deliveryTime: [
+        { month: "Jan", value: 45 },
+        { month: "Feb", value: 43 },
+        { month: "Mar", value: 44 },
+        { month: "Apr", value: 42 },
+        { month: "May", value: 45 },
+        { month: "Jun", value: 46 }
+      ],
+      fuelConsumption: [
+        { month: "Jan", value: 2800 },
+        { month: "Feb", value: 2650 },
+        { month: "Mar", value: 2700 },
+        { month: "Apr", value: 2750 },
+        { month: "May", value: 2850 },
+        { month: "Jun", value: 2900 }
+      ],
+      operationalCosts: [
+        { month: "Jan", value: 42500 },
+        { month: "Feb", value: 41000 },
+        { month: "Mar", value: 41500 },
+        { month: "Apr", value: 42000 },
+        { month: "May", value: 43000 },
+        { month: "Jun", value: 43500 }
+      ]
+    },
+    routes: [
+      {
+        id: 1,
+        name: "North Route",
+        coordinates: [
+          [40.7128, -74.0060],
+          [40.7300, -73.9950],
+          [40.7400, -73.9850],
+          [40.7500, -73.9750]
+        ],
+        color: "#0ea5e9",
+        active: true
+      },
+      {
+        id: 2,
+        name: "South Route",
+        coordinates: [
+          [40.7128, -74.0060],
+          [40.7000, -74.0100],
+          [40.6900, -74.0200],
+          [40.6800, -74.0300]
+        ],
+        color: "#14b8a6",
+        active: true
+      }
+    ],
+    vehicles: [
+      {
+        id: 1,
+        name: "Truck 101",
+        position: [40.7300, -73.9950],
+        status: "delivering",
+        packages: 15
+      },
+      {
+        id: 2,
+        name: "Truck 102",
+        position: [40.6900, -74.0200],
+        status: "delivering",
+        packages: 12
+      }
+    ],
+    deliveryPoints: [
+      {
+        id: 1,
+        name: "Warehouse A",
+        position: [40.7128, -74.0060],
+        type: "pickup"
+      },
+      {
+        id: 2,
+        name: "Store 123",
+        position: [40.7500, -73.9750],
+        type: "delivery"
+      },
+      {
+        id: 3,
+        name: "Store 456",
+        position: [40.6800, -74.0300],
+        type: "delivery"
+      }
+    ]
   },
   {
     id: 2,
-    name: "Increased Fleet",
-    description: "Scenario with 20% more vehicles in operation",
+    name: "Expanded East Coverage",
     type: "scenario",
-    createdAt: "2023-03-18",
-    creator: "John Doe",
-    routes: 14,
-    vehicles: 38,
+    description: "Proposed expansion to eastern regions with two additional distribution centers.",
+    metrics: {
+      deliveryTime: [
+        { month: "Jan", value: 38 },
+        { month: "Feb", value: 37 },
+        { month: "Mar", value: 36 },
+        { month: "Apr", value: 35 },
+        { month: "May", value: 36 },
+        { month: "Jun", value: 37 }
+      ],
+      fuelConsumption: [
+        { month: "Jan", value: 3200 },
+        { month: "Feb", value: 3150 },
+        { month: "Mar", value: 3100 },
+        { month: "Apr", value: 3050 },
+        { month: "May", value: 3100 },
+        { month: "Jun", value: 3150 }
+      ],
+      operationalCosts: [
+        { month: "Jan", value: 48000 },
+        { month: "Feb", value: 47500 },
+        { month: "Mar", value: 47000 },
+        { month: "Apr", value: 46500 },
+        { month: "May", value: 47000 },
+        { month: "Jun", value: 47500 }
+      ]
+    },
+    routes: [
+      {
+        id: 1,
+        name: "North Route",
+        coordinates: [
+          [40.7128, -74.0060],
+          [40.7300, -73.9950],
+          [40.7400, -73.9850],
+          [40.7500, -73.9750]
+        ],
+        color: "#0ea5e9",
+        active: true
+      },
+      {
+        id: 2,
+        name: "South Route",
+        coordinates: [
+          [40.7128, -74.0060],
+          [40.7000, -74.0100],
+          [40.6900, -74.0200],
+          [40.6800, -74.0300]
+        ],
+        color: "#14b8a6",
+        active: true
+      },
+      {
+        id: 3,
+        name: "East Route",
+        coordinates: [
+          [40.7128, -74.0060],
+          [40.7150, -73.9800],
+          [40.7200, -73.9600],
+          [40.7250, -73.9400]
+        ],
+        color: "#8b5cf6",
+        active: true
+      }
+    ],
+    vehicles: [
+      {
+        id: 1,
+        name: "Truck 101",
+        position: [40.7300, -73.9950],
+        status: "delivering",
+        packages: 15
+      },
+      {
+        id: 2,
+        name: "Truck 102",
+        position: [40.6900, -74.0200],
+        status: "delivering",
+        packages: 12
+      },
+      {
+        id: 3,
+        name: "Truck 103",
+        position: [40.7200, -73.9600],
+        status: "delivering",
+        packages: 10
+      }
+    ],
+    deliveryPoints: [
+      {
+        id: 1,
+        name: "Warehouse A",
+        position: [40.7128, -74.0060],
+        type: "pickup"
+      },
+      {
+        id: 2,
+        name: "Store 123",
+        position: [40.7500, -73.9750],
+        type: "delivery"
+      },
+      {
+        id: 3,
+        name: "Store 456",
+        position: [40.6800, -74.0300],
+        type: "delivery"
+      },
+      {
+        id: 4,
+        name: "East DC",
+        position: [40.7250, -73.9400],
+        type: "delivery"
+      }
+    ]
   },
   {
     id: 3,
-    name: "Route Optimization",
-    description: "Optimized routing with existing fleet",
+    name: "Optimized Fleet Configuration",
     type: "scenario",
-    createdAt: "2023-03-20",
-    creator: "Jane Smith",
-    routes: 10,
-    vehicles: 30,
-  },
-  {
-    id: 4,
-    name: "Holiday Rush",
-    description: "Scenario for anticipated holiday volume",
-    type: "scenario",
-    createdAt: "2023-03-25",
-    creator: "John Doe",
-    routes: 18,
-    vehicles: 45,
-  },
+    description: "Revised vehicle allocation and routing with focus on minimizing fuel consumption.",
+    metrics: {
+      deliveryTime: [
+        { month: "Jan", value: 47 },
+        { month: "Feb", value: 46 },
+        { month: "Mar", value: 46 },
+        { month: "Apr", value: 45 },
+        { month: "May", value: 45 },
+        { month: "Jun", value: 44 }
+      ],
+      fuelConsumption: [
+        { month: "Jan", value: 2400 },
+        { month: "Feb", value: 2350 },
+        { month: "Mar", value: 2300 },
+        { month: "Apr", value: 2250 },
+        { month: "May", value: 2200 },
+        { month: "Jun", value: 2150 }
+      ],
+      operationalCosts: [
+        { month: "Jan", value: 40000 },
+        { month: "Feb", value: 39500 },
+        { month: "Mar", value: 39000 },
+        { month: "Apr", value: 38500 },
+        { month: "May", value: 38000 },
+        { month: "Jun", value: 37500 }
+      ]
+    },
+    routes: [
+      {
+        id: 1,
+        name: "Optimized North Route",
+        coordinates: [
+          [40.7128, -74.0060],
+          [40.7350, -73.9900],
+          [40.7500, -73.9750]
+        ],
+        color: "#0ea5e9",
+        active: true
+      },
+      {
+        id: 2,
+        name: "Optimized South Route",
+        coordinates: [
+          [40.7128, -74.0060],
+          [40.6950, -74.0150],
+          [40.6800, -74.0300]
+        ],
+        color: "#14b8a6",
+        active: true
+      }
+    ],
+    vehicles: [
+      {
+        id: 1,
+        name: "EV Truck A",
+        position: [40.7350, -73.9900],
+        status: "delivering",
+        packages: 18
+      },
+      {
+        id: 2,
+        name: "EV Truck B",
+        position: [40.6950, -74.0150],
+        status: "delivering",
+        packages: 16
+      }
+    ],
+    deliveryPoints: [
+      {
+        id: 1,
+        name: "Warehouse A",
+        position: [40.7128, -74.0060],
+        type: "pickup"
+      },
+      {
+        id: 2,
+        name: "Store 123",
+        position: [40.7500, -73.9750],
+        type: "delivery"
+      },
+      {
+        id: 3,
+        name: "Store 456",
+        position: [40.6800, -74.0300],
+        type: "delivery"
+      }
+    ]
+  }
 ];

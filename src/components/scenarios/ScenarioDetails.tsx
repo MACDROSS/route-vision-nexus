@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,12 +22,13 @@ import {
   SheetFooter
 } from "@/components/ui/sheet";
 import { toast } from "sonner";
-import { ArrowLeft, FileText, Settings, BarChart, MapPin, Calendar, Edit, Copy, Trash2 } from "lucide-react";
+import { ArrowLeft, FileText, Settings, BarChart, MapPin, Calendar, Edit, Copy, Trash2, Map } from "lucide-react";
 import { scenariosData } from "./scenarios-data";
 import { MetricKey, metricLabels } from "./types";
 import { Badge } from "@/components/ui/badge";
 import ScenarioMetricChart from "./ScenarioMetricChart";
 import ScenarioMetricTable from "./ScenarioMetricTable";
+import ScenarioMapView from "./ScenarioMapView";
 import MainLayout from "@/components/layout/MainLayout";
 import { Table, TableBody, TableCell, TableHeader, TableHead, TableRow } from "@/components/ui/table";
 
@@ -38,6 +38,7 @@ const ScenarioDetails = () => {
   const scenarioId = parseInt(id || "0");
   const scenario = scenariosData.find(s => s.id === scenarioId);
   const [activeMetric, setActiveMetric] = useState<MetricKey>("deliveryTime");
+  const [activeView, setActiveView] = useState<"details" | "analysis" | "map" | "configuration">("details");
   
   // States for UI interactions
   const [isEditSheetOpen, setIsEditSheetOpen] = useState(false);
@@ -127,7 +128,10 @@ const ScenarioDetails = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
-        <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => {}}>
+        <Card 
+          className={`hover:shadow-md transition-shadow cursor-pointer ${activeView === "details" ? "border-primary" : ""}`} 
+          onClick={() => setActiveView("details")}
+        >
           <CardContent className="pt-6">
             <div className="flex flex-col items-center">
               <FileText className="h-8 w-8 mb-2 text-muted-foreground" />
@@ -139,7 +143,10 @@ const ScenarioDetails = () => {
           </CardContent>
         </Card>
         
-        <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={handleCompare}>
+        <Card 
+          className={`hover:shadow-md transition-shadow cursor-pointer ${activeView === "analysis" ? "border-primary" : ""}`} 
+          onClick={() => setActiveView("analysis")}
+        >
           <CardContent className="pt-6">
             <div className="flex flex-col items-center">
               <BarChart className="h-8 w-8 mb-2 text-muted-foreground" />
@@ -151,10 +158,13 @@ const ScenarioDetails = () => {
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => toast.info("Map view coming soon")}>
+        <Card 
+          className={`hover:shadow-md transition-shadow cursor-pointer ${activeView === "map" ? "border-primary" : ""}`} 
+          onClick={() => setActiveView("map")}
+        >
           <CardContent className="pt-6">
             <div className="flex flex-col items-center">
-              <MapPin className="h-8 w-8 mb-2 text-muted-foreground" />
+              <Map className="h-8 w-8 mb-2 text-muted-foreground" />
               <h3 className="text-lg font-semibold">Map View</h3>
               <p className="text-sm text-muted-foreground text-center mt-1">
                 Visualize routes and network coverage
@@ -163,7 +173,13 @@ const ScenarioDetails = () => {
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={handleEdit}>
+        <Card 
+          className={`hover:shadow-md transition-shadow cursor-pointer ${activeView === "configuration" ? "border-primary" : ""}`} 
+          onClick={() => {
+            setActiveView("configuration");
+            handleEdit();
+          }}
+        >
           <CardContent className="pt-6">
             <div className="flex flex-col items-center">
               <Settings className="h-8 w-8 mb-2 text-muted-foreground" />
@@ -176,102 +192,187 @@ const ScenarioDetails = () => {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Performance Metrics</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Tabs value={activeMetric} onValueChange={(value) => setActiveMetric(value as MetricKey)}>
-              <TabsList className="grid grid-cols-3 mb-4">
-                <TabsTrigger value="deliveryTime">Delivery Time</TabsTrigger>
-                <TabsTrigger value="fuelConsumption">Fuel Consumption</TabsTrigger>
-                <TabsTrigger value="operationalCosts">Operational Costs</TabsTrigger>
-              </TabsList>
-              
-              <div className="h-64 mb-6">
-                <ScenarioMetricChart 
-                  scenarios={[scenario]}
+      {activeView === "details" && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle>Description</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>{scenario.description}</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Summary</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">Type</h3>
+                  <p className="font-medium">{scenario.type === "baseline" ? "Baseline" : "Scenario"}</p>
+                </div>
+                
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">Created</h3>
+                  <div className="flex items-center">
+                    <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
+                    <p>June 15, 2025</p>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">Last Modified</h3>
+                  <div className="flex items-center">
+                    <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
+                    <p>June 18, 2025</p>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">Latest Metrics</h3>
+                  <Table className="mt-2">
+                    <TableBody>
+                      {Object.entries(metricLabels).map(([key, label]) => {
+                        const metricData = scenario.metrics[key as MetricKey];
+                        const latestValue = metricData[metricData.length - 1].value;
+                        
+                        return (
+                          <TableRow key={key} className="border-b">
+                            <TableCell className="py-2 pl-0">{label}</TableCell>
+                            <TableCell className="py-2 text-right font-medium">{latestValue.toLocaleString()}</TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </div>
+                
+                <div className="pt-4 flex justify-end gap-2">
+                  <Button variant="outline" onClick={handleEdit}>
+                    <Edit className="h-4 w-4 mr-2" />
+                    Edit
+                  </Button>
+                  <Button onClick={handleCompare}>Compare</Button>
+                </div>
+                
+                <div className="pt-2 flex justify-between gap-2">
+                  <Button variant="outline" size="sm" className="text-blue-600" onClick={handleDuplicate}>
+                    <Copy className="h-4 w-4 mr-2" />
+                    Duplicate
+                  </Button>
+                  <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10" onClick={handleDelete}>
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {activeView === "analysis" && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle>Performance Metrics</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Tabs value={activeMetric} onValueChange={(value) => setActiveMetric(value as MetricKey)}>
+                <TabsList className="grid grid-cols-3 mb-4">
+                  <TabsTrigger value="deliveryTime">Delivery Time</TabsTrigger>
+                  <TabsTrigger value="fuelConsumption">Fuel Consumption</TabsTrigger>
+                  <TabsTrigger value="operationalCosts">Operational Costs</TabsTrigger>
+                </TabsList>
+                
+                <div className="h-64 mb-6">
+                  <ScenarioMetricChart 
+                    scenarios={[scenario]}
+                    metricKey={activeMetric}
+                  />
+                </div>
+                
+                <ScenarioMetricTable 
+                  scenario={scenario}
                   metricKey={activeMetric}
                 />
-              </div>
-              
-              <ScenarioMetricTable 
-                scenario={scenario}
-                metricKey={activeMetric}
-              />
-            </Tabs>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader>
-            <CardTitle>Summary</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-sm font-medium text-muted-foreground">Type</h3>
-                <p className="font-medium">{scenario.type === "baseline" ? "Baseline" : "Scenario"}</p>
-              </div>
-              
-              <div>
-                <h3 className="text-sm font-medium text-muted-foreground">Created</h3>
-                <div className="flex items-center">
-                  <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <p>June 15, 2025</p>
+              </Tabs>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Summary</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">Type</h3>
+                  <p className="font-medium">{scenario.type === "baseline" ? "Baseline" : "Scenario"}</p>
+                </div>
+                
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">Created</h3>
+                  <div className="flex items-center">
+                    <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
+                    <p>June 15, 2025</p>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">Last Modified</h3>
+                  <div className="flex items-center">
+                    <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
+                    <p>June 18, 2025</p>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">Latest Metrics</h3>
+                  <Table className="mt-2">
+                    <TableBody>
+                      {Object.entries(metricLabels).map(([key, label]) => {
+                        const metricData = scenario.metrics[key as MetricKey];
+                        const latestValue = metricData[metricData.length - 1].value;
+                        
+                        return (
+                          <TableRow key={key} className="border-b">
+                            <TableCell className="py-2 pl-0">{label}</TableCell>
+                            <TableCell className="py-2 text-right font-medium">{latestValue.toLocaleString()}</TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </div>
+                
+                <div className="pt-4 flex justify-end gap-2">
+                  <Button variant="outline" onClick={handleEdit}>
+                    <Edit className="h-4 w-4 mr-2" />
+                    Edit
+                  </Button>
+                  <Button onClick={handleCompare}>Compare</Button>
+                </div>
+                
+                <div className="pt-2 flex justify-between gap-2">
+                  <Button variant="outline" size="sm" className="text-blue-600" onClick={handleDuplicate}>
+                    <Copy className="h-4 w-4 mr-2" />
+                    Duplicate
+                  </Button>
+                  <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10" onClick={handleDelete}>
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete
+                  </Button>
                 </div>
               </div>
-              
-              <div>
-                <h3 className="text-sm font-medium text-muted-foreground">Last Modified</h3>
-                <div className="flex items-center">
-                  <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <p>June 18, 2025</p>
-                </div>
-              </div>
-              
-              <div>
-                <h3 className="text-sm font-medium text-muted-foreground">Latest Metrics</h3>
-                <Table className="mt-2">
-                  <TableBody>
-                    {Object.entries(metricLabels).map(([key, label]) => {
-                      const metricData = scenario.metrics[key as MetricKey];
-                      const latestValue = metricData[metricData.length - 1].value;
-                      
-                      return (
-                        <TableRow key={key} className="border-b">
-                          <TableCell className="py-2 pl-0">{label}</TableCell>
-                          <TableCell className="py-2 text-right font-medium">{latestValue.toLocaleString()}</TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </div>
-              
-              <div className="pt-4 flex justify-end gap-2">
-                <Button variant="outline" onClick={handleEdit}>
-                  <Edit className="h-4 w-4 mr-2" />
-                  Edit
-                </Button>
-                <Button onClick={handleCompare}>Compare</Button>
-              </div>
-              
-              <div className="pt-2 flex justify-between gap-2">
-                <Button variant="outline" size="sm" className="text-blue-600" onClick={handleDuplicate}>
-                  <Copy className="h-4 w-4 mr-2" />
-                  Duplicate
-                </Button>
-                <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10" onClick={handleDelete}>
-                  <Trash2 className="h-4 w-4 mr-2" />
-                  Delete
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {activeView === "map" && <ScenarioMapView scenario={scenario} />}
 
       {/* Edit Scenario Sheet */}
       <Sheet open={isEditSheetOpen} onOpenChange={setIsEditSheetOpen}>

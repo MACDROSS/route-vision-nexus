@@ -16,6 +16,9 @@ export interface Scenario {
   type: "baseline" | "scenario";
   metrics: ScenarioMetrics;
   description: string;
+  routes?: ScenarioRoute[];
+  vehicles?: ScenarioVehicle[];
+  deliveryPoints?: ScenarioDeliveryPoint[];
 }
 
 export type MetricKey = keyof ScenarioMetrics;
@@ -35,3 +38,27 @@ export const metricLabels: Record<MetricKey, string> = {
   fuelConsumption: "Fuel Consumption (gal)",
   operationalCosts: "Operational Costs ($)",
 };
+
+// Map view related types
+export interface ScenarioRoute {
+  id: number;
+  name: string;
+  coordinates: [number, number][];
+  color: string;
+  active?: boolean;
+}
+
+export interface ScenarioVehicle {
+  id: number;
+  name: string;
+  position: [number, number];
+  status: "delivering" | "returning" | "idle";
+  packages: number;
+}
+
+export interface ScenarioDeliveryPoint {
+  id: number;
+  name: string;
+  position: [number, number];
+  type: "pickup" | "delivery";
+}
