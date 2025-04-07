@@ -9,9 +9,96 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { SortPlanningProvider } from '@/components/sort-planning/SortPlanningContext';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Activity } from "lucide-react";
+import ProcessFlow from "@/components/production-planning/ProcessFlow";
+import SixSigmaReport from "@/components/production-planning/SixSigmaMetrics";
+import { ProductionProcess, ProcessConnection, SixSigmaMetrics } from "@/types/production";
+import { useState } from "react";
 
 const ProductionPlanning = () => {
+  // Sample multi-step processes data
+  const [processes] = useState<ProductionProcess[]>([
+    { id: "1", name: "Raw Material Receiving", capacity: 500, color: "#4CAF50", stepNumber: 1 },
+    { id: "2", name: "Material Inspection", capacity: 450, color: "#2196F3", stepNumber: 2, dependsOn: "1" },
+    { id: "3", name: "Component Assembly", capacity: 400, color: "#FF9800", stepNumber: 3, dependsOn: "2" },
+    { id: "4", name: "Quality Control", capacity: 420, color: "#9C27B0", stepNumber: 4, dependsOn: "3" },
+    { id: "5", name: "Packaging", capacity: 410, color: "#E91E63", stepNumber: 5, dependsOn: "4" },
+    { id: "6", name: "Distribution Preparation", capacity: 430, color: "#3F51B5", stepNumber: 6, dependsOn: "5" }
+  ]);
+  
+  // Sample connections between processes with inventory data
+  const [connections] = useState<ProcessConnection[]>([
+    { sourceId: "1", targetId: "2", inventoryLevel: 85, cycleTime: 45 },
+    { sourceId: "2", targetId: "3", inventoryLevel: 120, cycleTime: 30 },
+    { sourceId: "3", targetId: "4", inventoryLevel: 65, cycleTime: 60 },
+    { sourceId: "4", targetId: "5", inventoryLevel: 40, cycleTime: 25 },
+    { sourceId: "5", targetId: "6", inventoryLevel: 90, cycleTime: 20 }
+  ]);
+  
+  // Sample Six Sigma metrics
+  const [sixSigmaMetrics] = useState<SixSigmaMetrics[]>([
+    { 
+      processId: "1", 
+      defectsPerMillionOpportunities: 3200, 
+      cycleTime: 45,
+      processCapability: 1.35,
+      valueAddedRatio: 0.65,
+      overallEquipmentEffectiveness: 82,
+      inventoryTurns: 24,
+      firstPassYield: 98.2
+    },
+    { 
+      processId: "2", 
+      defectsPerMillionOpportunities: 4100, 
+      cycleTime: 30,
+      processCapability: 1.21,
+      valueAddedRatio: 0.58,
+      overallEquipmentEffectiveness: 75,
+      inventoryTurns: 22,
+      firstPassYield: 97.6
+    },
+    { 
+      processId: "3", 
+      defectsPerMillionOpportunities: 5600, 
+      cycleTime: 60,
+      processCapability: 1.15,
+      valueAddedRatio: 0.72,
+      overallEquipmentEffectiveness: 68,
+      inventoryTurns: 18,
+      firstPassYield: 96.5
+    },
+    { 
+      processId: "4", 
+      defectsPerMillionOpportunities: 2800, 
+      cycleTime: 25,
+      processCapability: 1.42,
+      valueAddedRatio: 0.82,
+      overallEquipmentEffectiveness: 86,
+      inventoryTurns: 28,
+      firstPassYield: 99.1
+    },
+    { 
+      processId: "5", 
+      defectsPerMillionOpportunities: 3600, 
+      cycleTime: 20,
+      processCapability: 1.38,
+      valueAddedRatio: 0.76,
+      overallEquipmentEffectiveness: 81,
+      inventoryTurns: 26,
+      firstPassYield: 98.4
+    },
+    { 
+      processId: "6", 
+      defectsPerMillionOpportunities: 3100, 
+      cycleTime: 15,
+      processCapability: 1.45,
+      valueAddedRatio: 0.68,
+      overallEquipmentEffectiveness: 84,
+      inventoryTurns: 30,
+      firstPassYield: 98.7
+    }
+  ]);
+
   return (
     <MainLayout>
       <div className="mb-6">
@@ -25,8 +112,9 @@ const ProductionPlanning = () => {
         <div className="flex justify-between items-center mb-4">
           <TabsList>
             <TabsTrigger value="calendar">Production Calendar</TabsTrigger>
+            <TabsTrigger value="processes">Multi-Step Processes</TabsTrigger>
+            <TabsTrigger value="metrics">Six Sigma Metrics</TabsTrigger>
             <TabsTrigger value="optimization">Optimization</TabsTrigger>
-            <TabsTrigger value="processes">Processes</TabsTrigger>
             <TabsTrigger value="sort">Sort Planning</TabsTrigger>
           </TabsList>
         </div>
@@ -35,19 +123,20 @@ const ProductionPlanning = () => {
           <ProductionCalendar />
         </TabsContent>
         
-        <TabsContent value="optimization">
-          <OptimizationPanel />
+        <TabsContent value="processes">
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
+            <ProcessFlow processes={processes} connections={connections} />
+          </div>
         </TabsContent>
         
-        <TabsContent value="processes">
-          <Card>
-            <CardHeader>
-              <CardTitle>Process Management</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>Configure and manage production processes here.</p>
-            </CardContent>
-          </Card>
+        <TabsContent value="metrics">
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
+            <SixSigmaReport metrics={sixSigmaMetrics} processes={processes} />
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="optimization">
+          <OptimizationPanel />
         </TabsContent>
         
         <TabsContent value="sort">
