@@ -40,21 +40,35 @@ const RouteMap = ({
   height = "100%",
   className = "",
 }: RouteMapProps) => {
-  const [mapReady, setMapReady] = useState(false);
+  const [mapInitialized, setMapInitialized] = useState(false);
+  const mapContainerRef = useRef(null);
 
   useEffect(() => {
-    // Set map as ready after a short delay to ensure proper rendering
-    const timer = setTimeout(() => {
-      setMapReady(true);
-    }, 100);
+    // Set map as initialized to trigger rendering
+    setMapInitialized(true);
+    
+    return () => {
+      // Cleanup if needed
+    };
+  }, []);
 
-    return () => clearTimeout(timer);
+  // Make sure the marker icon is set before rendering
+  useEffect(() => {
+    // This ensures the icons are properly set for all markers
+    const L = require('leaflet');
+    delete L.Icon.Default.prototype._getIconUrl;
+    
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: iconRetinaUrl.toString(),
+      iconUrl: iconUrl.toString(),
+      shadowUrl: shadowUrl.toString(),
+    });
   }, []);
 
   return (
     <div className={`relative ${className}`} style={{ height }}>
       {/* Loading indicator while map is initializing */}
-      {!mapReady && (
+      {!mapInitialized && (
         <div className="absolute inset-0 flex items-center justify-center bg-muted rounded-lg">
           <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
         </div>
@@ -62,13 +76,17 @@ const RouteMap = ({
 
       {/* Map Container */}
       <MapContainer 
+        center={centerCoordinates}
+        zoom={zoom}
         style={{ height: "100%", width: "100%", borderRadius: "0.5rem" }}
-        className={`z-0 ${!mapReady ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
+        className={`z-0 ${!mapInitialized ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
+        ref={mapContainerRef}
       >
         {/* Use the MapView component to control center and zoom */}
         <MapView center={centerCoordinates} zoom={zoom} />
         
         <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
@@ -77,8 +95,14 @@ const RouteMap = ({
           <Polyline
             key={route.id}
             positions={route.coordinates}
-            pathOptions={{ color: route.color, weight: route.active ? 5 : 3 }}
-          />
+            pathOptions={{ color: route.color || '#0ea5e9', weight: route.active ? 5 : 3 }}
+          >
+            <Popup>
+              <div className="p-2">
+                <h3 className="font-medium">{route.name}</h3>
+              </div>
+            </Popup>
+          </Polyline>
         ))}
 
         {/* Add markers for vehicles */}
@@ -86,6 +110,7 @@ const RouteMap = ({
           <Marker
             key={vehicle.id}
             position={vehicle.position}
+            icon={defaultIcon}
           >
             <Popup>
               <div className="p-2">
@@ -106,6 +131,7 @@ const RouteMap = ({
           <Marker
             key={point.id}
             position={point.position}
+            icon={defaultIcon}
           >
             <Popup>
               <div className="p-2">
