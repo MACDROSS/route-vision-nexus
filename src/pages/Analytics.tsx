@@ -2,7 +2,7 @@
 import MainLayout from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Cell } from "recharts";
 import { Badge } from "@/components/ui/badge";
 import { ChartArea, ChartBar, ChartLine, ChartPie, Package, Truck, Users, Calendar } from "lucide-react";
@@ -157,9 +157,7 @@ const Analytics = () => {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="name" />
                       <YAxis />
-                      <ChartTooltip 
-                        content={props => <ChartTooltipContent {...props} />} 
-                      />
+                      <Tooltip />
                       <Legend />
                       <Bar dataKey="onTime" name="On Time" fill="var(--color-onTime)" stackId="a" />
                       <Bar dataKey="delayed" name="Delayed" fill="var(--color-delayed)" stackId="a" />
@@ -183,9 +181,7 @@ const Analytics = () => {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="name" />
                       <YAxis domain={[0, 100]} />
-                      <ChartTooltip 
-                        content={props => <ChartTooltipContent {...props} />} 
-                      />
+                      <Tooltip />
                       <Legend />
                       <Line 
                         type="monotone" 
@@ -220,9 +216,7 @@ const Analytics = () => {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="name" />
                       <YAxis />
-                      <ChartTooltip 
-                        content={props => <ChartTooltipContent {...props} />} 
-                      />
+                      <Tooltip />
                       <Legend />
                       <Bar dataKey="onTime" name="On Time" fill="var(--color-onTime)" stackId="a" />
                       <Bar dataKey="delayed" name="Delayed" fill="var(--color-delayed)" stackId="a" />
@@ -252,9 +246,7 @@ const Analytics = () => {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="month" />
                     <YAxis />
-                    <ChartTooltip 
-                      content={props => <ChartTooltipContent {...props} />} 
-                    />
+                    <Tooltip />
                     <Legend />
                     <Line type="monotone" dataKey="fuel" name="Fuel" stroke="var(--color-fuel)" />
                     <Line type="monotone" dataKey="maintenance" name="Maintenance" stroke="var(--color-maintenance)" />
