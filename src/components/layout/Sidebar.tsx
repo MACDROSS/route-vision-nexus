@@ -23,7 +23,8 @@ import {
   Truck, 
   PackageOpen,
   Users,
-  Factory
+  Factory,
+  MoveHorizontal
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -48,6 +49,11 @@ const Sidebar = () => {
       icon: Network,
       label: "Scenarios",
       href: "/scenarios"
+    },
+    {
+      icon: MoveHorizontal,
+      label: "Sort Planning",
+      href: "/sort-planning"
     },
     {
       icon: Factory,
