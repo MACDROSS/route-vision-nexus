@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import DataCatalog from "./pages/DataCatalog";
 import RouteOptimization from "./pages/RouteOptimization";
 import Scenarios from "./pages/Scenarios";
+import ProductionPlanning from "./pages/ProductionPlanning";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/data-catalog" element={<DataCatalog />} />
           <Route path="/route-optimization" element={<RouteOptimization />} />
           <Route path="/scenarios" element={<Scenarios />} />
+          <Route path="/production-planning" element={<ProductionPlanning />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

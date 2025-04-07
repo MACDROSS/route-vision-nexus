@@ -22,7 +22,8 @@ import {
   Settings, 
   Truck, 
   PackageOpen,
-  Users
+  Users,
+  Factory
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -47,6 +48,11 @@ const Sidebar = () => {
       icon: Network,
       label: "Scenarios",
       href: "/scenarios"
+    },
+    {
+      icon: Factory,
+      label: "Production Planning",
+      href: "/production-planning"
     },
     {
       icon: BarChart3,
