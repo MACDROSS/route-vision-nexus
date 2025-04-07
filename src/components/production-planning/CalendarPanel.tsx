@@ -9,6 +9,7 @@ interface CalendarPanelProps {
   selectedDate: Date | undefined;
   setSelectedDate: (date: Date | undefined) => void;
   selectedDateEvents: ProcessEvent[];
+  allEvents: ProcessEvent[]; // All events for the calendar
   removeEvent: (eventId: string) => void;
   addEvent: (event: ProcessEvent) => void;
 }
@@ -16,7 +17,8 @@ interface CalendarPanelProps {
 const CalendarPanel = ({ 
   selectedDate, 
   setSelectedDate, 
-  selectedDateEvents, 
+  selectedDateEvents,
+  allEvents,
   removeEvent,
   addEvent
 }: CalendarPanelProps) => {
@@ -28,14 +30,32 @@ const CalendarPanel = ({
     try {
       const processData = JSON.parse(e.dataTransfer.getData("application/json")) as ProductionProcess;
       
+      // Create a new event for this process
       const newEvent: ProcessEvent = {
         id: `event-${Date.now()}`,
         processId: processData.id,
         processName: processData.name,
         date: selectedDate,
         color: processData.color,
-        quantity: Math.round(processData.capacity * 0.8) // Default to 80% of capacity
+        quantity: Math.round(processData.capacity * 0.8), // Default to 80% of capacity
+        stepNumber: processData.stepNumber
       };
+      
+      // If this process depends on another process, find the most recent event for that process
+      if (processData.dependsOn) {
+        const dependentProcessEvents = allEvents.filter(e => e.processId === processData.dependsOn);
+        
+        // Find the most recent event for the process this depends on
+        if (dependentProcessEvents.length > 0) {
+          // Sort events by date (newest first)
+          const sortedEvents = [...dependentProcessEvents].sort(
+            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+          );
+          
+          // Set this event to depend on the most recent event of the dependent process
+          newEvent.dependsOn = sortedEvents[0].id;
+        }
+      }
       
       addEvent(newEvent);
     } catch (error) {
@@ -59,11 +79,13 @@ const CalendarPanel = ({
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
           onDrop={handleDrop}
+          allEvents={allEvents}
         />
 
         <ProductionEventList 
           selectedDate={selectedDate}
           selectedDateEvents={selectedDateEvents}
+          allEvents={allEvents}
           removeEvent={removeEvent}
         />
       </CardContent>

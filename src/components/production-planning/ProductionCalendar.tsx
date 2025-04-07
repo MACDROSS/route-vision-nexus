@@ -12,6 +12,7 @@ const ProductionCalendar = () => {
     addEvent,
     removeEvent,
     selectedDateEvents,
+    allEvents,
   } = useProductionCalendar();
 
   return (
@@ -24,6 +25,7 @@ const ProductionCalendar = () => {
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
         selectedDateEvents={selectedDateEvents}
+        allEvents={allEvents}
         removeEvent={removeEvent}
         addEvent={addEvent}
       />

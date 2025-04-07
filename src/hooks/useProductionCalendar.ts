@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { ProcessEvent, ProductionProcess } from "@/types/production";
 
@@ -9,6 +8,9 @@ export function useProductionCalendar() {
     { id: "1", name: "Assembly Line A", color: "#4CAF50", capacity: 100 },
     { id: "2", name: "Paint Process", color: "#2196F3", capacity: 80 },
     { id: "3", name: "Quality Control", color: "#FF9800", capacity: 120 },
+    { id: "process-1-step-1", name: "Material Preparation", color: "#9C27B0", capacity: 90, stepNumber: 1 },
+    { id: "process-1-step-2", name: "Component Assembly", color: "#9C27B0", capacity: 85, stepNumber: 2, dependsOn: "process-1-step-1" },
+    { id: "process-1-step-3", name: "Quality Testing", color: "#9C27B0", capacity: 100, stepNumber: 3, dependsOn: "process-1-step-2" },
   ]);
 
   const addEvent = (event: ProcessEvent) => {
@@ -16,7 +18,19 @@ export function useProductionCalendar() {
   };
 
   const removeEvent = (eventId: string) => {
-    setEvents(events.filter(event => event.id !== eventId));
+    const eventsToRemove = new Set([eventId]);
+    let size = 0;
+    
+    while (eventsToRemove.size > size) {
+      size = eventsToRemove.size;
+      events.forEach(event => {
+        if (event.dependsOn && eventsToRemove.has(event.dependsOn)) {
+          eventsToRemove.add(event.id);
+        }
+      });
+    }
+    
+    setEvents(events.filter(event => !eventsToRemove.has(event.id)));
   };
 
   const moveEvent = (eventId: string, newDate: Date) => {
@@ -25,7 +39,6 @@ export function useProductionCalendar() {
     ));
   };
 
-  // Get events for the selected date
   const selectedDateEvents = events.filter(
     event => selectedDate && 
     event.date.getDate() === selectedDate.getDate() && 
@@ -33,8 +46,12 @@ export function useProductionCalendar() {
     event.date.getFullYear() === selectedDate.getFullYear()
   );
 
-  // Dates with events for highlighting in calendar
-  const datesWithEvents = events.map(event => event.date);
+  const sortedSelectedDateEvents = [...selectedDateEvents].sort((a, b) => {
+    if (a.stepNumber && b.stepNumber) {
+      return a.stepNumber - b.stepNumber;
+    }
+    return 0;
+  });
 
   return {
     selectedDate,
@@ -45,7 +62,7 @@ export function useProductionCalendar() {
     addEvent,
     removeEvent,
     moveEvent,
-    selectedDateEvents,
-    datesWithEvents
+    selectedDateEvents: sortedSelectedDateEvents,
+    allEvents: events,
   };
 }

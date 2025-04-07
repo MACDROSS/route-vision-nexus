@@ -1,4 +1,3 @@
-
 export interface ProductionProcess {
   id: string;
   name: string;
@@ -16,6 +15,8 @@ export interface ProcessEvent {
   quantity: number;
   color: string;
   completionRate?: number; // Percentage of completion
+  dependsOn?: string; // ID of previous event this depends on
+  stepNumber?: number; // Position in the process sequence
 }
 
 export interface OptimizationResult {
