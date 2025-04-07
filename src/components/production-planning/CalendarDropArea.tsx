@@ -2,6 +2,7 @@
 import { Calendar } from "@/components/ui/calendar";
 import { ProcessEvent } from "@/types/production";
 import { Badge } from "@/components/ui/badge";
+import { DayContentProps } from "react-day-picker";
 
 interface CalendarDropAreaProps {
   selectedDate: Date | undefined;
@@ -67,11 +68,11 @@ const CalendarDropArea = ({
           }
         }}
         components={{
-          DayContent: (props) => {
+          DayContent: (props: DayContentProps) => {
             const eventCount = getEventCountForDate(props.date);
             return (
               <div className="relative w-full h-full flex items-center justify-center">
-                {props.day}
+                {props.date.getDate()}
                 {eventCount > 0 && (
                   <Badge 
                     variant="secondary" 
