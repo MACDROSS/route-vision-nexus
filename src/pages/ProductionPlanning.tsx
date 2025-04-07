@@ -9,7 +9,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { SortPlanningProvider } from '@/components/sort-planning/SortPlanningContext';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Activity } from "lucide-react";
+import { ArrowRight, Activity, Ship } from "lucide-react";
 import ProcessFlow from "@/components/production-planning/ProcessFlow";
 import SixSigmaReport from "@/components/production-planning/SixSigmaMetrics";
 import { ProductionProcess, ProcessConnection, SixSigmaMetrics } from "@/types/production";
@@ -103,8 +103,15 @@ const ProductionPlanning = () => {
     <MainLayout>
       <div className="mb-6">
         <h1 className="text-3xl font-bold mb-1">Production Planning</h1>
-        <p className="text-muted-foreground">
-          Optimize production schedules using Wagner-Whitin algorithm and visual planning tools
+        <p className="text-muted-foreground flex justify-between items-center">
+          <span>Optimize production schedules using Wagner-Whitin algorithm and visual planning tools</span>
+          <Link to="/shipping-transportation">
+            <Button variant="outline" size="sm" className="flex items-center gap-1">
+              <Ship className="h-4 w-4" />
+              Shipping & Transportation
+              <ArrowRight className="h-4 w-4 ml-1" />
+            </Button>
+          </Link>
         </p>
       </div>
 

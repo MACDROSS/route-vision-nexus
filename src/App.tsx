@@ -11,6 +11,7 @@ import DataCatalog from "./pages/DataCatalog";
 import RouteOptimization from "./pages/RouteOptimization";
 import Scenarios from "./pages/Scenarios";
 import ProductionPlanning from "./pages/ProductionPlanning";
+import ShippingTransportation from "./pages/ShippingTransportation";
 import PackageTracking from "./pages/PackageTracking";
 import Analytics from "./pages/Analytics";
 import ScenarioDetails from "./components/scenarios/ScenarioDetails";
@@ -35,6 +36,7 @@ function App() {
               <Route path="/scenarios" element={<Scenarios />} />
               <Route path="/scenarios/:id" element={<ScenarioDetails />} />
               <Route path="/production-planning" element={<ProductionPlanning />} />
+              <Route path="/shipping-transportation" element={<ShippingTransportation />} />
               <Route path="/package-tracking" element={<PackageTracking />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/sort-planning" element={<SortPlanning />} />

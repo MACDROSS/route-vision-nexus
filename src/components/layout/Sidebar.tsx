@@ -24,7 +24,8 @@ import {
   PackageOpen,
   Users,
   Factory,
-  MoveHorizontal
+  MoveHorizontal,
+  Ship
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -54,6 +55,11 @@ const Sidebar = () => {
       icon: Factory,
       label: "Production Planning",
       href: "/production-planning"
+    },
+    {
+      icon: Ship,
+      label: "Shipping",
+      href: "/shipping-transportation"
     },
     {
       icon: BarChart3,
