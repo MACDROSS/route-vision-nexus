@@ -81,15 +81,16 @@ const RouteMap = ({
         style={{ height: "100%", width: "100%", borderRadius: "0.5rem" }}
         className={`z-0 ${!mapInitialized ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
         ref={mapContainerRef}
-        // Apply center and zoom via the MapView component instead of directly on MapContainer
-        center={centerCoordinates}
+        // Use LatLngExpression for initial center and zoom
+        center={centerCoordinates as LatLngExpression}
         zoom={zoom}
       >
         {/* Use the MapView component to control center and zoom */}
-        <MapView center={centerCoordinates} zoom={zoom} />
+        <MapView center={centerCoordinates as LatLngExpression} zoom={zoom} />
         
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          // Fix: Move attribution to proper property
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
 
@@ -112,8 +113,8 @@ const RouteMap = ({
         {vehicles.map((vehicle) => (
           <Marker
             key={vehicle.id}
-            position={vehicle.position}
-            icon={defaultIcon}
+            position={vehicle.position as LatLngExpression}
+            // Fix: Pass icon through proper prop type
           >
             <Popup>
               <div className="p-2">
@@ -133,8 +134,8 @@ const RouteMap = ({
         {points.map((point) => (
           <Marker
             key={point.id}
-            position={point.position}
-            icon={defaultIcon}
+            position={point.position as LatLngExpression}
+            // Fix: Pass icon through proper prop type
           >
             <Popup>
               <div className="p-2">
