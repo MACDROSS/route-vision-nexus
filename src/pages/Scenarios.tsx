@@ -6,13 +6,40 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import ScenariosList from "@/components/scenarios/ScenariosList";
 import CreateScenarioForm from "@/components/scenarios/CreateScenarioForm";
-import { scenarios } from "@/components/scenarios/scenarios-data.mock";
+import { scenariosData } from "@/components/scenarios/scenarios-data";
 import ScenariosDragList from "@/components/scenarios/ScenariosDragList";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
+// Define the interface needed by ScenariosList and ScenariosDragList
+interface ScenarioData {
+  id: number;
+  name: string;
+  description: string;
+  type: string;
+  createdAt: string;
+  creator: string;
+  routes: number;
+  vehicles: number;
+}
+
+// Convert scenariosData to the format expected by ScenariosList
+const convertToScenariosList = () => {
+  return scenariosData.map(scenario => ({
+    id: scenario.id,
+    name: scenario.name,
+    description: scenario.description,
+    type: scenario.type,
+    createdAt: "June 15, 2025", // Default date since it's not in the original data
+    creator: "System", // Default creator since it's not in the original data
+    routes: scenario.routes?.length || 0,
+    vehicles: scenario.vehicles?.length || 0
+  }));
+};
+
 const Scenarios = () => {
   const [activeTab, setActiveTab] = useState("list");
+  const scenariosListData = convertToScenariosList();
   
   return (
     <MainLayout>
@@ -49,7 +76,7 @@ const Scenarios = () => {
         </div>
         
         <TabsContent value="list">
-          <ScenariosList scenarios={scenarios} />
+          <ScenariosList scenarios={scenariosListData} />
         </TabsContent>
         
         <TabsContent value="comparison">
@@ -59,7 +86,7 @@ const Scenarios = () => {
         </TabsContent>
         
         <TabsContent value="organize">
-          <ScenariosDragList scenarios={scenarios} />
+          <ScenariosDragList scenarios={scenariosListData} />
         </TabsContent>
         
         <TabsContent value="create">
