@@ -31,3 +31,25 @@ export interface RouteMapProps {
   height?: string;
   className?: string;
 }
+
+// Package tracking interfaces
+export interface Package {
+  id: string;
+  trackingId: string;
+  status: "pending" | "in_transit" | "delivered" | "delayed" | "returned";
+  origin: string;
+  destination: string;
+  estimatedDelivery: string; // ISO date string
+  actualDelivery?: string; // ISO date string
+  customerName: string;
+  lastUpdate: string; // ISO date string
+  onTime: boolean;
+  priorityLevel: "standard" | "express" | "priority";
+  vehicleId?: number;
+}
+
+export interface PackageFilter {
+  status?: Package["status"] | "all";
+  priority?: Package["priorityLevel"] | "all";
+  onTime?: boolean | "all";
+}

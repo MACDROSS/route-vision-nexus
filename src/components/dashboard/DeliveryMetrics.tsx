@@ -13,11 +13,16 @@ const data = [
   { day: 'Sun', onTime: 98, delayed: 2 },
 ];
 
-const DeliveryMetrics = () => {
+interface DeliveryMetricsProps {
+  title?: string;
+  className?: string;
+}
+
+const DeliveryMetrics = ({ title = "Delivery Performance", className = "" }: DeliveryMetricsProps) => {
   return (
-    <Card className="h-full">
+    <Card className={`h-full ${className}`}>
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg">Delivery Performance</CardTitle>
+        <CardTitle className="text-lg">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-64">
@@ -40,7 +45,7 @@ const DeliveryMetrics = () => {
         <div className="flex justify-center mt-2">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
-              <div className="h-3 w-3 bg-courier-500 rounded"></div>
+              <div className="h-3 w-3 bg-[#14b8a6] rounded"></div>
               <span className="text-sm">On Time</span>
             </div>
             <div className="flex items-center gap-2">
