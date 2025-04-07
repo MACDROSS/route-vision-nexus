@@ -12,6 +12,7 @@ interface CalendarPanelProps {
   allEvents: ProcessEvent[]; // All events for the calendar
   removeEvent: (eventId: string) => void;
   addEvent: (event: ProcessEvent) => void;
+  className?: string; // Added className prop
 }
 
 const CalendarPanel = ({ 
@@ -20,7 +21,8 @@ const CalendarPanel = ({
   selectedDateEvents,
   allEvents,
   removeEvent,
-  addEvent
+  addEvent,
+  className // Added className prop
 }: CalendarPanelProps) => {
 
   const handleDrop = (e: React.DragEvent) => {
@@ -64,7 +66,7 @@ const CalendarPanel = ({
   };
 
   return (
-    <Card className="lg:col-span-3 flex flex-col">
+    <Card className={className || "lg:col-span-3 flex flex-col"}>
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center justify-between">
           <span>Production Calendar</span>
