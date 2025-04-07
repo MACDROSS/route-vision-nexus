@@ -1,214 +1,32 @@
 
-import { useState } from "react";
-import { Calendar } from "@/components/ui/calendar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  AlertCircle, 
-  CalendarDays, 
-  ChevronLeft, 
-  ChevronRight, 
-  Factory, 
-  Info, 
-  Plus 
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { 
-  Dialog,
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle,
-  DialogTrigger
-} from "@/components/ui/dialog";
-import ProcessForm from "./ProcessForm";
-import { ProcessEvent, ProductionProcess } from "@/types/production";
-import ProductionEventItem from "./ProductionEventItem";
+import { useProductionCalendar } from "@/hooks/useProductionCalendar";
+import ProcessesPanel from "./ProcessesPanel";
+import CalendarPanel from "./CalendarPanel";
 
 const ProductionCalendar = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
-  const [events, setEvents] = useState<ProcessEvent[]>([]);
-  const [processes, setProcesses] = useState<ProductionProcess[]>([
-    { id: "1", name: "Assembly Line A", color: "#4CAF50", capacity: 100 },
-    { id: "2", name: "Paint Process", color: "#2196F3", capacity: 80 },
-    { id: "3", name: "Quality Control", color: "#FF9800", capacity: 120 },
-  ]);
-
-  const addEvent = (event: ProcessEvent) => {
-    setEvents([...events, event]);
-  };
-
-  const removeEvent = (eventId: string) => {
-    setEvents(events.filter(event => event.id !== eventId));
-  };
-
-  const moveEvent = (eventId: string, newDate: Date) => {
-    setEvents(events.map(event => 
-      event.id === eventId ? { ...event, date: newDate } : event
-    ));
-  };
-
-  // Filter events for the selected date
-  const selectedDateEvents = events.filter(
-    event => selectedDate && 
-    event.date.getDate() === selectedDate.getDate() && 
-    event.date.getMonth() === selectedDate.getMonth() &&
-    event.date.getFullYear() === selectedDate.getFullYear()
-  );
-
-  // Dates with events for highlighting in calendar
-  const datesWithEvents = events.map(event => event.date);
+  const {
+    selectedDate,
+    setSelectedDate,
+    processes,
+    setProcesses,
+    addEvent,
+    removeEvent,
+    selectedDateEvents,
+  } = useProductionCalendar();
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 h-full">
       {/* Processes panel */}
-      <Card className="lg:col-span-1">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg flex items-center justify-between">
-            <span>Production Processes</span>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button size="sm" variant="outline">
-                  <Plus className="h-4 w-4 mr-1" />
-                  New
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Add New Process</DialogTitle>
-                </DialogHeader>
-                <ProcessForm 
-                  onSubmit={(process) => setProcesses([...processes, process])} 
-                />
-              </DialogContent>
-            </Dialog>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ScrollArea className="h-[500px] pr-4">
-            <div className="space-y-2">
-              {processes.map(process => (
-                <div
-                  key={process.id}
-                  className="p-3 border rounded-md cursor-move bg-white"
-                  draggable
-                  style={{ borderLeft: `4px solid ${process.color}` }}
-                  onDragStart={(e) => {
-                    e.dataTransfer.setData("application/json", JSON.stringify(process));
-                  }}
-                >
-                  <div className="font-medium">{process.name}</div>
-                  <div className="text-sm text-muted-foreground">
-                    Capacity: {process.capacity} units
-                  </div>
-                </div>
-              ))}
-              
-              {processes.length === 0 && (
-                <div className="text-center py-8 text-muted-foreground">
-                  <Factory className="mx-auto h-8 w-8 mb-2 opacity-50" />
-                  <p>No processes created yet</p>
-                  <p className="text-sm">Add a process to begin planning</p>
-                </div>
-              )}
-            </div>
-          </ScrollArea>
-        </CardContent>
-      </Card>
+      <ProcessesPanel processes={processes} setProcesses={setProcesses} />
 
       {/* Calendar */}
-      <Card className="lg:col-span-3 flex flex-col">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg flex items-center justify-between">
-            <span>Production Calendar</span>
-            <div className="flex items-center text-sm text-muted-foreground">
-              <Info className="h-4 w-4 mr-1" />
-              Drag processes and drop on calendar dates
-            </div>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex-1 flex flex-col">
-          <div 
-            className="flex-1"
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => {
-              e.preventDefault();
-              if (!selectedDate) return;
-              
-              try {
-                const processData = JSON.parse(e.dataTransfer.getData("application/json")) as ProductionProcess;
-                
-                const newEvent: ProcessEvent = {
-                  id: `event-${Date.now()}`,
-                  processId: processData.id,
-                  processName: processData.name,
-                  date: selectedDate,
-                  color: processData.color,
-                  quantity: Math.round(processData.capacity * 0.8) // Default to 80% of capacity
-                };
-                
-                addEvent(newEvent);
-              } catch (error) {
-                console.error("Error handling drop:", error);
-              }
-            }}
-          >
-            <Calendar
-              mode="single"
-              selected={selectedDate}
-              onSelect={setSelectedDate}
-              disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
-              className="rounded-md border"
-              modifiersStyles={{
-                selected: {
-                  backgroundColor: "hsl(var(--primary))",
-                  color: "hsl(var(--primary-foreground))"
-                },
-                today: {
-                  backgroundColor: "hsl(var(--accent))",
-                  color: "hsl(var(--accent-foreground))"
-                }
-              }}
-            />
-          </div>
-
-          {/* Events for selected day */}
-          <ScrollArea className="h-[200px] mt-4 border rounded-md p-2">
-            <div className="p-2 space-y-2">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-medium flex items-center">
-                  <CalendarDays className="mr-2 h-4 w-4" />
-                  {selectedDate ? selectedDate.toLocaleDateString(undefined, { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                  }) : "No date selected"}
-                </h3>
-                
-                <Badge variant="outline">
-                  {selectedDateEvents.length} Events
-                </Badge>
-              </div>
-
-              {selectedDateEvents.length > 0 ? (
-                selectedDateEvents.map(event => (
-                  <ProductionEventItem
-                    key={event.id}
-                    event={event}
-                    onRemove={() => removeEvent(event.id)}
-                  />
-                ))
-              ) : (
-                <div className="text-center py-4 text-muted-foreground">
-                  <p>No production events scheduled</p>
-                  <p className="text-sm">Drag a process from the left panel and drop here</p>
-                </div>
-              )}
-            </div>
-          </ScrollArea>
-        </CardContent>
-      </Card>
+      <CalendarPanel 
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+        selectedDateEvents={selectedDateEvents}
+        removeEvent={removeEvent}
+        addEvent={addEvent}
+      />
     </div>
   );
 };
