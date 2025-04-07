@@ -24,7 +24,8 @@ const RouteCard: React.FC<RouteCardProps> = ({
   return (
     <Card key={route.id} className="overflow-hidden">
       <div 
-        className={`flex items-center justify-between p-4 cursor-pointer ${route.color ? `border-l-4 border-[${route.color}]` : ''}`} 
+        className="flex items-center justify-between p-4 cursor-pointer border-l-4"
+        style={{ borderLeftColor: route.color || '#888' }}
         onClick={onToggleExpand}
       >
         <div className="flex items-center gap-2">
@@ -50,3 +51,4 @@ const RouteCard: React.FC<RouteCardProps> = ({
 };
 
 export default RouteCard;
+

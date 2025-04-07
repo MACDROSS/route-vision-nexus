@@ -31,6 +31,8 @@ const RouteMapView = ({ routes, vehicles, points }: RouteMapViewProps) => {
                 vehicles={vehicles}
                 points={points}
                 height="70vh"
+                centerCoordinates={[40.7128, -74.0060]} // Center on NYC
+                zoom={12}
               />
             </div>
           </CardContent>
@@ -83,3 +85,4 @@ const VehicleList = ({ vehicles }: { vehicles: Vehicle[] }) => {
 };
 
 export default RouteMapView;
+
