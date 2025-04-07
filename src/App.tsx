@@ -13,30 +13,32 @@ import Scenarios from "./pages/Scenarios";
 import ProductionPlanning from "./pages/ProductionPlanning";
 import PackageTracking from "./pages/PackageTracking";
 
-// Create a new QueryClient instance outside the component
+// Create a new QueryClient instance
 const queryClient = new QueryClient();
 
-// Make App a proper function component using React.FC
-const App: React.FC = () => {
+// Define App as a function component
+function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/data-catalog" element={<DataCatalog />} />
-            <Route path="/route-optimization" element={<RouteOptimization />} />
-            <Route path="/scenarios" element={<Scenarios />} />
-            <Route path="/production-planning" element={<ProductionPlanning />} />
-            <Route path="/package-tracking" element={<PackageTracking />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/data-catalog" element={<DataCatalog />} />
+              <Route path="/route-optimization" element={<RouteOptimization />} />
+              <Route path="/scenarios" element={<Scenarios />} />
+              <Route path="/production-planning" element={<ProductionPlanning />} />
+              <Route path="/package-tracking" element={<PackageTracking />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </React.StrictMode>
   );
-};
+}
 
 export default App;
