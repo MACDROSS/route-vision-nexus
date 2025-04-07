@@ -15,6 +15,7 @@ export interface Scenario {
   name: string;
   type: "baseline" | "scenario";
   metrics: ScenarioMetrics;
+  description: string;
 }
 
 export type MetricKey = keyof ScenarioMetrics;

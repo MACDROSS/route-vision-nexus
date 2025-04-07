@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CalendarDays, Copy, FileText, MapPin, MoreHorizontal, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface ScenarioCardProps {
   scenario: {
@@ -25,6 +26,12 @@ interface ScenarioCardProps {
 }
 
 const ScenarioCard = ({ scenario }: ScenarioCardProps) => {
+  const navigate = useNavigate();
+  
+  const handleViewDetails = () => {
+    navigate(`/scenarios/${scenario.id}`);
+  };
+  
   return (
     <Card key={scenario.id} className="h-full">
       <CardHeader className="pb-2">
@@ -45,7 +52,7 @@ const ScenarioCard = ({ scenario }: ScenarioCardProps) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={handleViewDetails}>
                 <FileText className="h-4 w-4 mr-2" />
                 View Details
               </DropdownMenuItem>
@@ -91,7 +98,7 @@ const ScenarioCard = ({ scenario }: ScenarioCardProps) => {
             {scenario.type !== "baseline" && (
               <Button variant="outline" size="sm" className="flex-1">Compare</Button>
             )}
-            <Button size="sm" className="flex-1">Edit</Button>
+            <Button size="sm" className="flex-1" onClick={handleViewDetails}>View Details</Button>
           </div>
         </div>
       </CardContent>
