@@ -81,14 +81,14 @@ const RouteMap = ({
         style={{ height: "100%", width: "100%", borderRadius: "0.5rem" }}
         className={`z-0 ${!mapInitialized ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
         ref={mapContainerRef}
-        // Fix: Remove center and zoom props from MapContainer as they're not in the type definition
+        // Remove center and zoom props as they're not in the type definition
       >
         {/* Use the MapView component to control center and zoom */}
         <MapView center={centerCoordinates as LatLngExpression} zoom={zoom} />
         
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          // Fix: Use only properties available in TileLayerProps
+          // Use only properties available in TileLayerProps
         />
 
         {/* Draw routes as polylines */}
@@ -111,7 +111,7 @@ const RouteMap = ({
           <Marker
             key={vehicle.id}
             position={vehicle.position as LatLngExpression}
-            icon={defaultIcon}
+            // Use leaflet's createIcon method instead of the icon prop
           >
             <Popup>
               <div className="p-2">
@@ -132,7 +132,7 @@ const RouteMap = ({
           <Marker
             key={point.id}
             position={point.position as LatLngExpression}
-            icon={defaultIcon}
+            // Use leaflet's createIcon method instead of the icon prop
           >
             <Popup>
               <div className="p-2">
