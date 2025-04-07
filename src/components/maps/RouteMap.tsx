@@ -70,7 +70,6 @@ const RouteMap = ({
         
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
 
         {/* Draw routes as polylines */}
@@ -87,7 +86,6 @@ const RouteMap = ({
           <Marker
             key={vehicle.id}
             position={vehicle.position}
-            icon={defaultIcon}
           >
             <Popup>
               <div className="p-2">
@@ -108,7 +106,6 @@ const RouteMap = ({
           <Marker
             key={point.id}
             position={point.position}
-            icon={defaultIcon}
           >
             <Popup>
               <div className="p-2">
