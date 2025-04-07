@@ -4,7 +4,26 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, FileText, Settings, BarChart, MapPin, Calendar } from "lucide-react";
+import { 
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle
+} from "@/components/ui/alert-dialog";
+import { 
+  Sheet, 
+  SheetContent, 
+  SheetHeader, 
+  SheetTitle,
+  SheetDescription,
+  SheetFooter
+} from "@/components/ui/sheet";
+import { toast } from "sonner";
+import { ArrowLeft, FileText, Settings, BarChart, MapPin, Calendar, Edit, Copy, Trash2 } from "lucide-react";
 import { scenariosData } from "./scenarios-data";
 import { MetricKey, metricLabels } from "./types";
 import { Badge } from "@/components/ui/badge";
@@ -20,6 +39,58 @@ const ScenarioDetails = () => {
   const scenario = scenariosData.find(s => s.id === scenarioId);
   const [activeMetric, setActiveMetric] = useState<MetricKey>("deliveryTime");
   
+  // States for UI interactions
+  const [isEditSheetOpen, setIsEditSheetOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isCompareSheetOpen, setIsCompareSheetOpen] = useState(false);
+  const [scenariosToCompare, setScenariosToCompare] = useState<number[]>([]);
+
+  // Handle actions
+  const handleEdit = () => {
+    setIsEditSheetOpen(true);
+  };
+
+  const handleSaveEdit = () => {
+    toast.success("Changes saved successfully");
+    setIsEditSheetOpen(false);
+  };
+
+  const handleDelete = () => {
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    toast.success("Scenario deleted successfully");
+    setIsDeleteDialogOpen(false);
+    navigate("/scenarios");
+  };
+
+  const handleDuplicate = () => {
+    toast.success("Scenario duplicated successfully");
+  };
+
+  const handleCompare = () => {
+    if (scenario) {
+      setScenariosToCompare([scenario.id]);
+      setIsCompareSheetOpen(true);
+    }
+  };
+
+  const handleAddToComparison = (id: number) => {
+    setScenariosToCompare(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(item => item !== id);
+      } else {
+        return [...prev, id];
+      }
+    });
+  };
+
+  const handleViewComparison = () => {
+    setIsCompareSheetOpen(false);
+    navigate(`/scenarios?compare=${scenariosToCompare.join(',')}`);
+  };
+
   if (!scenario) {
     return (
       <MainLayout>
@@ -56,7 +127,7 @@ const ScenarioDetails = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
-        <Card>
+        <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => {}}>
           <CardContent className="pt-6">
             <div className="flex flex-col items-center">
               <FileText className="h-8 w-8 mb-2 text-muted-foreground" />
@@ -68,7 +139,7 @@ const ScenarioDetails = () => {
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={handleCompare}>
           <CardContent className="pt-6">
             <div className="flex flex-col items-center">
               <BarChart className="h-8 w-8 mb-2 text-muted-foreground" />
@@ -80,7 +151,7 @@ const ScenarioDetails = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => toast.info("Map view coming soon")}>
           <CardContent className="pt-6">
             <div className="flex flex-col items-center">
               <MapPin className="h-8 w-8 mb-2 text-muted-foreground" />
@@ -92,7 +163,7 @@ const ScenarioDetails = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={handleEdit}>
           <CardContent className="pt-6">
             <div className="flex flex-col items-center">
               <Settings className="h-8 w-8 mb-2 text-muted-foreground" />
@@ -180,13 +251,136 @@ const ScenarioDetails = () => {
               </div>
               
               <div className="pt-4 flex justify-end gap-2">
-                <Button variant="outline">Edit</Button>
-                <Button>Compare</Button>
+                <Button variant="outline" onClick={handleEdit}>
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit
+                </Button>
+                <Button onClick={handleCompare}>Compare</Button>
+              </div>
+              
+              <div className="pt-2 flex justify-between gap-2">
+                <Button variant="outline" size="sm" className="text-blue-600" onClick={handleDuplicate}>
+                  <Copy className="h-4 w-4 mr-2" />
+                  Duplicate
+                </Button>
+                <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10" onClick={handleDelete}>
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete
+                </Button>
               </div>
             </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Edit Scenario Sheet */}
+      <Sheet open={isEditSheetOpen} onOpenChange={setIsEditSheetOpen}>
+        <SheetContent className="sm:max-w-md">
+          <SheetHeader>
+            <SheetTitle>Edit Scenario</SheetTitle>
+            <SheetDescription>
+              Make changes to your scenario. Click save when you're done.
+            </SheetDescription>
+          </SheetHeader>
+          <div className="py-6">
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="name" className="text-sm font-medium">Name</label>
+                <input
+                  id="name"
+                  className="w-full mt-1 px-3 py-2 border rounded-md"
+                  defaultValue={scenario.name}
+                />
+              </div>
+              <div>
+                <label htmlFor="description" className="text-sm font-medium">Description</label>
+                <textarea
+                  id="description"
+                  className="w-full mt-1 px-3 py-2 border rounded-md"
+                  defaultValue={scenario.description}
+                  rows={3}
+                />
+              </div>
+              <div>
+                <label htmlFor="type" className="text-sm font-medium">Type</label>
+                <select
+                  id="type"
+                  className="w-full mt-1 px-3 py-2 border rounded-md"
+                  defaultValue={scenario.type}
+                >
+                  <option value="baseline">Baseline</option>
+                  <option value="scenario">Scenario</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <SheetFooter>
+            <Button variant="outline" onClick={() => setIsEditSheetOpen(false)}>Cancel</Button>
+            <Button onClick={handleSaveEdit}>Save changes</Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your scenario
+              and remove all associated data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Compare Scenarios Sheet */}
+      <Sheet open={isCompareSheetOpen} onOpenChange={setIsCompareSheetOpen}>
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>Compare Scenarios</SheetTitle>
+            <SheetDescription>
+              Select scenarios to compare with {scenario.name}
+            </SheetDescription>
+          </SheetHeader>
+          <div className="py-6">
+            <div className="space-y-4">
+              {scenariosData
+                .filter(s => s.id !== scenario.id)
+                .map(s => (
+                  <div key={s.id} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id={`scenario-${s.id}`}
+                      checked={scenariosToCompare.includes(s.id)}
+                      onChange={() => handleAddToComparison(s.id)}
+                      className="h-4 w-4 rounded border-gray-300"
+                    />
+                    <label htmlFor={`scenario-${s.id}`} className="text-sm font-medium">
+                      {s.name}
+                      {s.type === "baseline" && (
+                        <Badge variant="secondary" className="ml-2">Baseline</Badge>
+                      )}
+                    </label>
+                  </div>
+                ))}
+            </div>
+          </div>
+          <SheetFooter>
+            <Button variant="outline" onClick={() => setIsCompareSheetOpen(false)}>Cancel</Button>
+            <Button onClick={handleViewComparison} disabled={scenariosToCompare.length <= 1}>
+              View Comparison
+            </Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+
     </MainLayout>
   );
 };
