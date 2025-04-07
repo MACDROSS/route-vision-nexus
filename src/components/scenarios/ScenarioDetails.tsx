@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import ScenarioNavigationCards from "./ScenarioNavigationCards";
 import ScenarioDetailsView from "./views/ScenarioDetailsView";
 import ScenarioAnalysisView from "./views/ScenarioAnalysisView";
+import ScenarioRoutesView from "./views/ScenarioRoutesView";
 import { ScenarioDialogs } from "./dialogs/ScenarioDialogs";
 
 const ScenarioDetails = () => {
@@ -22,7 +23,7 @@ const ScenarioDetails = () => {
   const scenarioId = parseInt(id || "0");
   const scenario = scenariosData.find(s => s.id === scenarioId);
   const [activeMetric, setActiveMetric] = useState<MetricKey>("deliveryTime");
-  const [activeView, setActiveView] = useState<"details" | "analysis" | "map" | "configuration">("details");
+  const [activeView, setActiveView] = useState<"details" | "analysis" | "map" | "configuration" | "routes">("details");
   
   // States for UI interactions
   const [isEditSheetOpen, setIsEditSheetOpen] = useState(false);
@@ -130,6 +131,8 @@ const ScenarioDetails = () => {
       )}
 
       {activeView === "map" && <ScenarioMapView scenario={scenario} />}
+      
+      {activeView === "routes" && <ScenarioRoutesView scenario={scenario} />}
 
       {/* Dialog and Sheet components */}
       <ScenarioDialogs 

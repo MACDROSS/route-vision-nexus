@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, Settings, BarChart, Map } from "lucide-react";
+import { FileText, Settings, BarChart, Map, List } from "lucide-react";
 
 interface NavigationCardProps {
   title: string;
@@ -37,8 +37,8 @@ const NavigationCard: React.FC<NavigationCardProps> = ({
 };
 
 interface ScenarioNavigationCardsProps {
-  activeView: "details" | "analysis" | "map" | "configuration";
-  onViewChange: (view: "details" | "analysis" | "map" | "configuration") => void;
+  activeView: "details" | "analysis" | "map" | "configuration" | "routes";
+  onViewChange: (view: "details" | "analysis" | "map" | "configuration" | "routes") => void;
   onOpenConfiguration: () => void;
 }
 
@@ -48,7 +48,7 @@ const ScenarioNavigationCards: React.FC<ScenarioNavigationCardsProps> = ({
   onOpenConfiguration
 }) => {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-6">
       <NavigationCard 
         title="Details" 
         description="View scenario details and configuration"
@@ -63,6 +63,14 @@ const ScenarioNavigationCards: React.FC<ScenarioNavigationCardsProps> = ({
         icon={<BarChart className="h-8 w-8 mb-2 text-muted-foreground" />}
         isActive={activeView === "analysis"}
         onClick={() => onViewChange("analysis")}
+      />
+
+      <NavigationCard 
+        title="Routes" 
+        description="Manage and reorder route stops"
+        icon={<List className="h-8 w-8 mb-2 text-muted-foreground" />}
+        isActive={activeView === "routes"}
+        onClick={() => onViewChange("routes")}
       />
 
       <NavigationCard 
