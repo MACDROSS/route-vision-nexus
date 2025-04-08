@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { ComplianceRecord } from '@/types/compliance';
 
 interface StatusBadgeProps {
-  status: ComplianceRecord['status'];
+  status?: ComplianceRecord['status'];
   complianceStatus?: ComplianceRecord['complianceStatus'];
   priority?: string;
 }
@@ -71,9 +71,13 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, complianceStat
     );
   }
   
-  return (
-    <Badge variant="outline" className={getStatusColor(status)}>
-      {status.replace('_', ' ')}
-    </Badge>
-  );
+  if (status) {
+    return (
+      <Badge variant="outline" className={getStatusColor(status)}>
+        {status.replace('_', ' ')}
+      </Badge>
+    );
+  }
+  
+  return null;
 };
