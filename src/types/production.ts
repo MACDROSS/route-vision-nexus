@@ -1,3 +1,4 @@
+
 export interface ProductionProcess {
   id: string;
   name: string;
@@ -42,4 +43,48 @@ export interface SixSigmaMetrics {
   overallEquipmentEffectiveness?: number; // OEE
   inventoryTurns?: number; // Annual COGS / Average Inventory Value
   firstPassYield?: number; // % items passing quality first time
+}
+
+// New types for conveyor metrics
+export interface ConveyorMetrics {
+  id: string;
+  name: string;
+  throughput: number; // Items per hour
+  utilization: number; // Percentage of capacity used
+  downtime: number; // Minutes per day
+  mtbf: number; // Mean Time Between Failures (hours)
+  mttr: number; // Mean Time To Repair (minutes)
+  efficiency: number; // Percentage
+  bottlenecks: BottleneckEvent[];
+  metricHistory: ConveyorMetricHistory[];
+  alerts?: ConveyorAlert[];
+}
+
+export interface BottleneckEvent {
+  id: string;
+  location: string;
+  timestamp: Date;
+  duration: number; // Minutes
+  impact: number; // Percentage loss of throughput
+  status: 'active' | 'resolved';
+  reason?: string;
+}
+
+export interface ConveyorAlert {
+  id: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  message: string;
+  timestamp: Date;
+  read: boolean;
+  metricId: string;
+  metricName?: string;
+  thresholdValue?: number;
+  actualValue?: number;
+}
+
+export interface ConveyorMetricHistory {
+  timestamp: Date;
+  throughput: number;
+  utilization: number;
+  efficiency: number;
 }

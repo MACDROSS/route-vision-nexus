@@ -9,11 +9,12 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { SortPlanningProvider } from '@/components/sort-planning/SortPlanningContext';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Activity, Ship } from "lucide-react";
+import { ArrowRight, Activity, Ship, Gauge } from "lucide-react";
 import ProcessFlow from "@/components/production-planning/ProcessFlow";
 import SixSigmaReport from "@/components/production-planning/SixSigmaMetrics";
 import { ProductionProcess, ProcessConnection, SixSigmaMetrics } from "@/types/production";
 import { useState } from "react";
+import ConveyorMetricsOverview from "@/components/production-planning/conveyor-metrics/ConveyorMetricsOverview";
 
 const ProductionPlanning = () => {
   // Sample multi-step processes data
@@ -119,6 +120,7 @@ const ProductionPlanning = () => {
         <div className="flex justify-between items-center mb-4">
           <TabsList>
             <TabsTrigger value="calendar">Production Calendar</TabsTrigger>
+            <TabsTrigger value="conveyors">Conveyor Metrics</TabsTrigger>
             <TabsTrigger value="processes">Multi-Step Processes</TabsTrigger>
             <TabsTrigger value="metrics">Six Sigma Metrics</TabsTrigger>
             <TabsTrigger value="optimization">Optimization</TabsTrigger>
@@ -128,6 +130,10 @@ const ProductionPlanning = () => {
         
         <TabsContent value="calendar" className="h-[calc(100vh-12rem)]">
           <ProductionCalendar />
+        </TabsContent>
+        
+        <TabsContent value="conveyors">
+          <ConveyorMetricsOverview />
         </TabsContent>
         
         <TabsContent value="processes">
