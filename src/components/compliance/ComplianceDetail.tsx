@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { format } from 'date-fns';
 import { ComplianceRecord } from '@/types/compliance';
@@ -147,7 +146,7 @@ export const ComplianceDetail: React.FC<ComplianceDetailProps> = ({ record }) =>
             <div>
               <Label className="text-xs text-muted-foreground">Customer</Label>
               <div className="flex items-center mt-1">
-                <Users className="h-4 w-4 mr-2 text-muted-foreground" />
+                <User className="h-4 w-4 mr-2 text-muted-foreground" />
                 <span>{record.customerName}</span>
               </div>
             </div>
