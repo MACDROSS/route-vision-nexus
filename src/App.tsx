@@ -19,6 +19,9 @@ import SortPlanning from "./pages/SortPlanning";
 import ComplianceMonitoring from "./pages/ComplianceMonitoring";
 import Help from "./pages/Help";
 import LoadPlans from "./pages/LoadPlans";
+import Fleet from "./pages/Fleet";
+import Facilities from "./pages/Facilities";
+import Personnel from "./pages/Personnel";
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
@@ -45,6 +48,9 @@ function App() {
               <Route path="/sort-planning" element={<SortPlanning />} />
               <Route path="/compliance-monitoring" element={<ComplianceMonitoring />} />
               <Route path="/load-plans" element={<LoadPlans />} />
+              <Route path="/fleet" element={<Fleet />} />
+              <Route path="/facilities" element={<Facilities />} />
+              <Route path="/personnel" element={<Personnel />} />
               <Route path="/help" element={<Help />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
