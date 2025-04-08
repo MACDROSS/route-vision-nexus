@@ -16,6 +16,7 @@ import PackageTracking from "./pages/PackageTracking";
 import Analytics from "./pages/Analytics";
 import ScenarioDetails from "./components/scenarios/ScenarioDetails";
 import SortPlanning from "./pages/SortPlanning";
+import ComplianceMonitoring from "./pages/ComplianceMonitoring";
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ function App() {
               <Route path="/package-tracking" element={<PackageTracking />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/sort-planning" element={<SortPlanning />} />
+              <Route path="/compliance-monitoring" element={<ComplianceMonitoring />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

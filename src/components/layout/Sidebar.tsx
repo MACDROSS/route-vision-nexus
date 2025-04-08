@@ -25,7 +25,8 @@ import {
   Users,
   Factory,
   MoveHorizontal,
-  Ship
+  Ship,
+  Shield
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -65,6 +66,11 @@ const Sidebar = () => {
       icon: BarChart3,
       label: "Analytics",
       href: "/analytics"
+    },
+    {
+      icon: Shield,
+      label: "Compliance",
+      href: "/compliance-monitoring"
     }
   ];
 
