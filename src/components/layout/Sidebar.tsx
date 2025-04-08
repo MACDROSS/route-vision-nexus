@@ -28,7 +28,8 @@ import {
   Network,
   Building,
   MoveHorizontal,
-  Users 
+  Users,
+  BoxesIcon 
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -63,6 +64,11 @@ const Sidebar = () => {
       icon: Ship,
       label: "Shipping",
       href: "/shipping-transportation"
+    },
+    {
+      icon: BoxesIcon,
+      label: "Load Plans",
+      href: "/load-plans"
     },
     {
       icon: BarChart3,
