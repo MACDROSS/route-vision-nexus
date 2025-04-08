@@ -72,6 +72,17 @@ const TopNavigation = () => {
   const [currentUser, setCurrentUser] = useState<UserAccount>(userAccounts[0]);
   const navigate = useNavigate();
 
+  // Initialize currentUser from localStorage or default to first user
+  useEffect(() => {
+    const savedUserId = localStorage.getItem('selectedUserId');
+    if (savedUserId) {
+      const savedUser = userAccounts.find(user => user.id === savedUserId);
+      if (savedUser) {
+        setCurrentUser(savedUser);
+      }
+    }
+  }, []);
+
   // Check if current route is accessible to selected user
   useEffect(() => {
     const currentPath = window.location.pathname.split('/')[1];
@@ -96,6 +107,8 @@ const TopNavigation = () => {
     const selectedUser = userAccounts.find(user => user.id === userId);
     if (selectedUser) {
       setCurrentUser(selectedUser);
+      // Save user selection to localStorage
+      localStorage.setItem('selectedUserId', userId);
     }
   };
 
