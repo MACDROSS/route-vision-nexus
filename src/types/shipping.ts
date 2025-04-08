@@ -25,6 +25,7 @@ export interface ShippingPlan {
   quantity: number;
   scheduledDate: Date;
   status: 'planned' | 'in-transit' | 'delivered';
+  customerId?: string; // Added to track which customer this shipment is for
 }
 
 export interface IntermodalConnection {
@@ -44,4 +45,35 @@ export interface IntermodalRoute {
   totalTime: number; // in hours
   totalCost: number;
   totalDistance: number; // in miles/km
+}
+
+export interface Customer {
+  id: string;
+  name: string;
+  logo?: string;
+  contactEmail?: string;
+  priority: 'high' | 'medium' | 'low';
+  industry: string;
+}
+
+export interface CustomerTrend {
+  id: string;
+  customerId: string;
+  metric: 'on_time_delivery' | 'shipping_cost' | 'volume' | 'damages';
+  value: number;
+  previousValue: number;
+  changePercent: number;
+  timestamp: Date;
+  status: 'improving' | 'stable' | 'declining';
+}
+
+export interface CustomerAlert {
+  id: string;
+  customerId: string;
+  title: string;
+  message: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  timestamp: Date;
+  isRead: boolean;
+  relatedMetric?: string;
 }

@@ -1,4 +1,3 @@
-
 import MainLayout from "@/components/layout/MainLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,15 +5,17 @@ import FinishedGoodsAvailability from "@/components/shipping/FinishedGoodsAvaila
 import TransportationAvailability from "@/components/shipping/TransportationAvailability";
 import IntermodalTransportation from "@/components/shipping/IntermodalTransportation";
 import ShippingCalendar from "@/components/shipping/ShippingCalendar";
+import CustomerTrendsPage from "@/components/shipping/customer-trends/CustomerTrendsPage";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { useShippingStore } from "@/hooks/useShippingStore";
+import { useShippingStore } from "@/hooks/shipping/store";
 import { format } from "date-fns";
-import { AlertCircle, CheckCircle, Clock, Container, DollarSign, FileText, MapPin, Package, PieChart, Route, Truck } from "lucide-react";
+import { AlertCircle, CheckCircle, Clock, Container, DollarSign, FileText, MapPin, Package, PieChart, Route, Truck, ArrowDown, ArrowUp } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const ShippingTransportation = () => {
-  const { shippingPlans, finishedGoods, transportOptions } = useShippingStore();
+  const { shippingPlans, finishedGoods, transportOptions, customerAlerts } = useShippingStore();
+  const unreadAlerts = customerAlerts.filter(alert => !alert.isRead).length;
   
   // Helper functions
   const getFinishedGoodName = (id: string) => {
@@ -87,6 +88,14 @@ const ShippingTransportation = () => {
             <TabsTrigger value="intermodal">Intermodal</TabsTrigger>
             <TabsTrigger value="planning">Planning</TabsTrigger>
             <TabsTrigger value="shipping-plans">Shipping Plans</TabsTrigger>
+            <TabsTrigger value="customers" className="relative">
+              Customer Trends
+              {unreadAlerts > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white">
+                  {unreadAlerts}
+                </span>
+              )}
+            </TabsTrigger>
           </TabsList>
         </div>
         
@@ -207,6 +216,84 @@ const ShippingTransportation = () => {
                     </div>
                   </div>
                 </ScrollArea>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Customer Trends Preview */}
+          <div className="mb-6">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center justify-between">
+                  <div className="flex items-center">
+                    <PieChart className="mr-2 h-5 w-5 text-blue-500" />
+                    <span>Customer Trends</span>
+                  </div>
+                  {unreadAlerts > 0 && (
+                    <Badge variant="outline" className="bg-red-100 text-red-800 border-red-300">
+                      {unreadAlerts} New Alert{unreadAlerts > 1 ? 's' : ''}
+                    </Badge>
+                  )}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {/* Amazon customer preview */}
+                <div className="border rounded-md p-3">
+                  <div className="flex justify-between items-center mb-3">
+                    <div className="flex items-center gap-2">
+                      <h4 className="font-medium">Amazon</h4>
+                      <Badge variant="outline" className="bg-red-100 text-red-800 border-red-300">
+                        High Priority
+                      </Badge>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
+                    <div className="border rounded p-2">
+                      <div className="text-xs text-muted-foreground">On-Time Delivery</div>
+                      <div className="text-base font-medium">97.1%</div>
+                      <div className="text-xs text-green-600 flex items-center gap-0.5">
+                        <ArrowUp className="h-3 w-3" />
+                        1.4%
+                      </div>
+                    </div>
+                    <div className="border rounded p-2">
+                      <div className="text-xs text-muted-foreground">Shipping Cost</div>
+                      <div className="text-base font-medium">$1.28M</div>
+                      <div className="text-xs text-red-600 flex items-center gap-0.5">
+                        <ArrowDown className="h-3 w-3" />
+                        4.9%
+                      </div>
+                    </div>
+                    <div className="border rounded p-2">
+                      <div className="text-xs text-muted-foreground">Volume</div>
+                      <div className="text-base font-medium">98.5K</div>
+                      <div className="text-xs text-green-600 flex items-center gap-0.5">
+                        <ArrowUp className="h-3 w-3" />
+                        7.1%
+                      </div>
+                    </div>
+                    <div className="border rounded p-2">
+                      <div className="text-xs text-muted-foreground">Damage Rate</div>
+                      <div className="text-base font-medium">0.9%</div>
+                      <div className="text-xs text-red-600 flex items-center gap-0.5">
+                        <ArrowDown className="h-3 w-3" />
+                        50.0%
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-center mt-3">
+                    <a href="#" className="text-sm text-blue-600 hover:underline" onClick={(e) => {
+                      e.preventDefault();
+                      document.querySelector('[data-value="customers"]')?.dispatchEvent(
+                        new MouseEvent('click', { bubbles: true })
+                      );
+                    }}>
+                      View all customer trends
+                    </a>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -410,6 +497,10 @@ const ShippingTransportation = () => {
               </ScrollArea>
             </CardContent>
           </Card>
+        </TabsContent>
+        
+        <TabsContent value="customers">
+          <CustomerTrendsPage fullView={true} />
         </TabsContent>
       </Tabs>
     </MainLayout>

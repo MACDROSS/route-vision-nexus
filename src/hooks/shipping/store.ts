@@ -6,7 +6,10 @@ import {
   initialTransportOptions, 
   initialShippingPlans, 
   initialIntermodalConnections,
-  initialIntermodalRoutes
+  initialIntermodalRoutes,
+  initialCustomers,
+  initialCustomerTrends,
+  initialCustomerAlerts
 } from './data';
 import { createShippingActions } from './actions';
 
@@ -16,5 +19,8 @@ export const useShippingStore = create<ShippingStore>((set) => ({
   shippingPlans: initialShippingPlans,
   intermodalConnections: initialIntermodalConnections,
   intermodalRoutes: initialIntermodalRoutes,
+  customers: initialCustomers,
+  customerTrends: initialCustomerTrends,
+  customerAlerts: initialCustomerAlerts,
   ...createShippingActions(set)
 }));

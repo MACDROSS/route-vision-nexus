@@ -1,4 +1,4 @@
-import { FinishedGood, TransportOption, ShippingPlan, IntermodalConnection, IntermodalRoute } from '@/types/shipping';
+import { FinishedGood, TransportOption, ShippingPlan, IntermodalConnection, IntermodalRoute, Customer, CustomerTrend, CustomerAlert } from '@/types/shipping';
 import { addDays } from 'date-fns';
 
 // Helper function to create a date with just the day part changed
@@ -254,5 +254,203 @@ export const initialIntermodalRoutes: IntermodalRoute[] = [
     totalTime: 32,
     totalCost: 3500,
     totalDistance: 850
+  }
+];
+
+export const initialCustomers: Customer[] = [
+  {
+    id: 'customer-001',
+    name: 'Amazon',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1200px-Amazon_logo.svg.png',
+    contactEmail: 'logistics@amazon.com',
+    priority: 'high',
+    industry: 'E-commerce'
+  },
+  {
+    id: 'customer-002',
+    name: 'Walmart',
+    contactEmail: 'supply-chain@walmart.com',
+    priority: 'high',
+    industry: 'Retail'
+  },
+  {
+    id: 'customer-003',
+    name: 'Target',
+    contactEmail: 'logistics@target.com',
+    priority: 'medium',
+    industry: 'Retail'
+  },
+  {
+    id: 'customer-004',
+    name: 'Home Depot',
+    contactEmail: 'freight@homedepot.com',
+    priority: 'medium',
+    industry: 'Home Improvement'
+  }
+];
+
+export const initialCustomerTrends: CustomerTrend[] = [
+  {
+    id: 'trend-001',
+    customerId: 'customer-001',
+    metric: 'on_time_delivery',
+    value: 94.2,
+    previousValue: 92.1,
+    changePercent: 2.1,
+    timestamp: createDate(-30),
+    status: 'improving'
+  },
+  {
+    id: 'trend-002',
+    customerId: 'customer-001',
+    metric: 'on_time_delivery',
+    value: 95.7,
+    previousValue: 94.2,
+    changePercent: 1.5,
+    timestamp: createDate(-15),
+    status: 'improving'
+  },
+  {
+    id: 'trend-003',
+    customerId: 'customer-001',
+    metric: 'on_time_delivery',
+    value: 97.1,
+    previousValue: 95.7,
+    changePercent: 1.4,
+    timestamp: createDate(0),
+    status: 'improving'
+  },
+  {
+    id: 'trend-004',
+    customerId: 'customer-001',
+    metric: 'shipping_cost',
+    value: 1250000,
+    previousValue: 1300000,
+    changePercent: -3.8,
+    timestamp: createDate(-30),
+    status: 'improving'
+  },
+  {
+    id: 'trend-005',
+    customerId: 'customer-001',
+    metric: 'shipping_cost',
+    value: 1220000,
+    previousValue: 1250000,
+    changePercent: -2.4,
+    timestamp: createDate(-15),
+    status: 'improving'
+  },
+  {
+    id: 'trend-006',
+    customerId: 'customer-001',
+    metric: 'shipping_cost',
+    value: 1280000,
+    previousValue: 1220000,
+    changePercent: 4.9,
+    timestamp: createDate(0),
+    status: 'declining'
+  },
+  {
+    id: 'trend-007',
+    customerId: 'customer-001',
+    metric: 'volume',
+    value: 87500,
+    previousValue: 85000,
+    changePercent: 2.9,
+    timestamp: createDate(-30),
+    status: 'improving'
+  },
+  {
+    id: 'trend-008',
+    customerId: 'customer-001',
+    metric: 'volume',
+    value: 92000,
+    previousValue: 87500,
+    changePercent: 5.1,
+    timestamp: createDate(-15),
+    status: 'improving'
+  },
+  {
+    id: 'trend-009',
+    customerId: 'customer-001',
+    metric: 'volume',
+    value: 98500,
+    previousValue: 92000,
+    changePercent: 7.1,
+    timestamp: createDate(0),
+    status: 'improving'
+  },
+  {
+    id: 'trend-010',
+    customerId: 'customer-001',
+    metric: 'damages',
+    value: 0.8,
+    previousValue: 1.2,
+    changePercent: -33.3,
+    timestamp: createDate(-30),
+    status: 'improving'
+  },
+  {
+    id: 'trend-011',
+    customerId: 'customer-001',
+    metric: 'damages',
+    value: 0.6,
+    previousValue: 0.8,
+    changePercent: -25.0,
+    timestamp: createDate(-15),
+    status: 'improving'
+  },
+  {
+    id: 'trend-012',
+    customerId: 'customer-001',
+    metric: 'damages',
+    value: 0.9,
+    previousValue: 0.6,
+    changePercent: 50.0,
+    timestamp: createDate(0),
+    status: 'declining'
+  }
+];
+
+export const initialCustomerAlerts: CustomerAlert[] = [
+  {
+    id: 'alert-001',
+    customerId: 'customer-001',
+    title: 'Shipping Cost Increase',
+    message: 'Amazon shipping costs have increased by 4.9% in the last period.',
+    severity: 'medium',
+    timestamp: createDate(0),
+    isRead: false,
+    relatedMetric: 'shipping_cost'
+  },
+  {
+    id: 'alert-002',
+    customerId: 'customer-001',
+    title: 'Damage Rate Increase',
+    message: 'Product damage rate for Amazon shipments has increased by 50% in the last period.',
+    severity: 'high',
+    timestamp: createDate(0),
+    isRead: false,
+    relatedMetric: 'damages'
+  },
+  {
+    id: 'alert-003',
+    customerId: 'customer-001',
+    title: 'Record Volume Increase',
+    message: 'Amazon shipping volume has increased by 7.1% reaching a new record high.',
+    severity: 'low',
+    timestamp: createDate(-1),
+    isRead: true,
+    relatedMetric: 'volume'
+  },
+  {
+    id: 'alert-004',
+    customerId: 'customer-001',
+    title: 'On-Time Delivery Improvement',
+    message: 'On-time delivery rate for Amazon has improved to 97.1%, exceeding target of 95%.',
+    severity: 'low',
+    timestamp: createDate(-2),
+    isRead: true,
+    relatedMetric: 'on_time_delivery'
   }
 ];

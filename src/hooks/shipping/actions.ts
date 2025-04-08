@@ -1,5 +1,5 @@
 
-import { FinishedGood, TransportOption, ShippingPlan, IntermodalConnection, IntermodalRoute } from '@/types/shipping';
+import { FinishedGood, TransportOption, ShippingPlan, IntermodalConnection, IntermodalRoute, Customer, CustomerTrend, CustomerAlert } from '@/types/shipping';
 import { ShippingStore } from './types';
 
 export const createShippingActions = (set: any): Pick<ShippingStore, 
@@ -9,7 +9,10 @@ export const createShippingActions = (set: any): Pick<ShippingStore,
   'removeShippingPlan' | 
   'updateTransportStatus' |
   'addIntermodalConnection' |
-  'addIntermodalRoute'> => ({
+  'addIntermodalRoute' |
+  'addCustomerAlert' |
+  'markAlertAsRead' |
+  'addCustomerTrend'> => ({
   
   addFinishedGood: (good: FinishedGood) => set((state: ShippingStore) => ({
     finishedGoods: [...state.finishedGoods, good]
@@ -39,5 +42,19 @@ export const createShippingActions = (set: any): Pick<ShippingStore,
   
   addIntermodalRoute: (route: IntermodalRoute) => set((state: ShippingStore) => ({
     intermodalRoutes: [...(state.intermodalRoutes || []), route]
+  })),
+
+  addCustomerAlert: (alert: CustomerAlert) => set((state: ShippingStore) => ({
+    customerAlerts: [...(state.customerAlerts || []), alert]
+  })),
+
+  markAlertAsRead: (id: string) => set((state: ShippingStore) => ({
+    customerAlerts: state.customerAlerts.map(alert => 
+      alert.id === id ? { ...alert, isRead: true } : alert
+    )
+  })),
+
+  addCustomerTrend: (trend: CustomerTrend) => set((state: ShippingStore) => ({
+    customerTrends: [...(state.customerTrends || []), trend]
   }))
 });
