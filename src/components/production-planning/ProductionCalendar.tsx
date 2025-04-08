@@ -3,6 +3,7 @@ import { useProductionCalendar } from "@/hooks/useProductionCalendar";
 import ProcessesPanel from "./ProcessesPanel";
 import CalendarPanel from "./CalendarPanel";
 import ProcessHierarchyView from "./ProcessHierarchyView";
+import ProductionTimeline from "./ProductionTimeline";
 
 const ProductionCalendar = () => {
   const {
@@ -25,6 +26,13 @@ const ProductionCalendar = () => {
       <ProcessHierarchyView 
         processes={processes} 
         className="lg:col-span-3 lg:row-span-1"
+      />
+
+      {/* Timeline View */}
+      <ProductionTimeline 
+        processes={processes}
+        events={allEvents}
+        className="lg:col-span-3"
       />
 
       {/* Calendar */}
