@@ -26,7 +26,8 @@ import {
   Factory,
   MoveHorizontal,
   Ship,
-  Shield
+  Shield,
+  HelpCircle
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -148,6 +149,14 @@ const Sidebar = () => {
 
       <SidebarFooter>
         <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <Link to="/help" className="flex gap-3 items-center">
+                <HelpCircle className="h-5 w-5" />
+                <span>Help & Documentation</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <Link to="/settings" className="flex gap-3 items-center">
