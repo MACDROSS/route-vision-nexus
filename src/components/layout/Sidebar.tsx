@@ -15,19 +15,20 @@ import {
 
 import { 
   LayoutDashboard, 
-  Database, 
-  MapPin, 
-  BarChart3, 
-  Network, 
+  Map, 
   Settings, 
-  Truck, 
+  Truck,
   PackageOpen,
-  Users,
   Factory,
-  MoveHorizontal,
   Ship,
+  BarChart3,
   Shield,
-  HelpCircle
+  HelpCircle,
+  FileStack,
+  Network,
+  Building,
+  MoveHorizontal,
+  Users 
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -39,12 +40,12 @@ const Sidebar = () => {
       href: "/"
     },
     {
-      icon: MapPin,
+      icon: Map,
       label: "Route Optimization",
       href: "/route-optimization"
     },
     {
-      icon: Database,
+      icon: FileStack,
       label: "Data Catalog",
       href: "/data-catalog"
     },
@@ -83,18 +84,23 @@ const Sidebar = () => {
     },
     {
       icon: PackageOpen,
-      label: "Packages",
-      href: "/packages"
+      label: "Package Tracking",
+      href: "/package-tracking"
     },
     {
-      icon: Users,
-      label: "Personnel",
-      href: "/personnel"
+      icon: Building,
+      label: "Facilities",
+      href: "/facilities"
     },
     {
       icon: MoveHorizontal,
       label: "Sort Planning",
       href: "/sort-planning"
+    },
+    {
+      icon: Users,
+      label: "Personnel",
+      href: "/personnel"
     }
   ];
 
@@ -102,7 +108,7 @@ const Sidebar = () => {
     <ShadcnSidebar>
       <SidebarHeader className="px-4 py-3">
         <div className="flex items-center gap-2">
-          <Truck className="h-6 w-6 text-sidebar-accent" />
+          <Truck className="h-6 w-6 text-primary" />
           <span className="font-semibold text-lg">CourierTwin</span>
         </div>
       </SidebarHeader>

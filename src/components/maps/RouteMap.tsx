@@ -16,10 +16,10 @@ const createCustomIcon = (color: string) => {
     iconUrl: iconUrl.toString(),
     iconRetinaUrl: iconRetinaUrl.toString(),
     shadowUrl: shadowUrl.toString(),
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41],
+    iconSize: [25, 41] as L.PointExpression,
+    iconAnchor: [12, 41] as L.PointExpression,
+    popupAnchor: [1, -34] as L.PointExpression,
+    shadowSize: [41, 41] as L.PointExpression,
     className: `custom-icon-${color}`
   });
 };
@@ -29,10 +29,10 @@ const defaultIconOptions = {
   iconUrl: iconUrl.toString(),
   iconRetinaUrl: iconRetinaUrl.toString(),
   shadowUrl: shadowUrl.toString(),
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
+  iconSize: [25, 41] as L.PointExpression,
+  iconAnchor: [12, 41] as L.PointExpression,
+  popupAnchor: [1, -34] as L.PointExpression,
+  shadowSize: [41, 41] as L.PointExpression,
 };
 
 const RouteMap = ({
