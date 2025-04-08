@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CustomerTrend } from "@/types/shipping";
-import { ChartLineUp, ChartLine, ArrowUp, ArrowDown } from "lucide-react";
+import { BarChart, LineChart, ArrowUp, ArrowDown } from "lucide-react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 
@@ -17,10 +17,10 @@ const METRIC_LABELS = {
 };
 
 const METRIC_ICONS = {
-  on_time_delivery: <ChartLine className="h-4 w-4" />,
-  shipping_cost: <ChartLineUp className="h-4 w-4" />,
-  volume: <ChartLineUp className="h-4 w-4" />,
-  damages: <ChartLine className="h-4 w-4" />
+  on_time_delivery: <LineChart className="h-4 w-4" />,
+  shipping_cost: <BarChart className="h-4 w-4" />,
+  volume: <BarChart className="h-4 w-4" />,
+  damages: <LineChart className="h-4 w-4" />
 };
 
 const METRIC_FORMATS = {
