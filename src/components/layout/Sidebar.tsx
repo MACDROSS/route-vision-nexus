@@ -29,7 +29,8 @@ import {
   Building,
   MoveHorizontal,
   Users,
-  BoxesIcon 
+  BoxesIcon,
+  Calendar 
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -97,6 +98,11 @@ const Sidebar = () => {
       icon: Building,
       label: "Facilities",
       href: "/facilities"
+    },
+    {
+      icon: Calendar,
+      label: "Facility Schedule",
+      href: "/facility-schedule"
     },
     {
       icon: MoveHorizontal,
