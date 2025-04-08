@@ -4,12 +4,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import FinishedGoodsAvailability from "@/components/shipping/FinishedGoodsAvailability";
 import TransportationAvailability from "@/components/shipping/TransportationAvailability";
+import IntermodalTransportation from "@/components/shipping/IntermodalTransportation";
 import ShippingCalendar from "@/components/shipping/ShippingCalendar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { useShippingStore } from "@/hooks/useShippingStore";
 import { format } from "date-fns";
-import { AlertCircle, CheckCircle, Clock, DollarSign, FileText, MapPin, Package, PieChart, Route, Truck } from "lucide-react";
+import { AlertCircle, CheckCircle, Clock, Container, DollarSign, FileText, MapPin, Package, PieChart, Route, Truck } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const ShippingTransportation = () => {
@@ -83,6 +84,7 @@ const ShippingTransportation = () => {
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="finished-goods">Finished Goods</TabsTrigger>
             <TabsTrigger value="transportation">Transportation</TabsTrigger>
+            <TabsTrigger value="intermodal">Intermodal</TabsTrigger>
             <TabsTrigger value="planning">Planning</TabsTrigger>
             <TabsTrigger value="shipping-plans">Shipping Plans</TabsTrigger>
           </TabsList>
@@ -152,6 +154,61 @@ const ShippingTransportation = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <FinishedGoodsAvailability />
             <TransportationAvailability />
+          </div>
+
+          {/* Intermodal Transportation Preview */}
+          <div className="mb-6">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center justify-between">
+                  <div className="flex items-center">
+                    <Container className="mr-2 h-5 w-5 text-purple-500" />
+                    <span>Intermodal Transportation</span>
+                  </div>
+                  <Badge variant="outline" className="bg-purple-100 text-purple-800 border-purple-300">
+                    New
+                  </Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="max-h-[300px] overflow-auto">
+                <ScrollArea className="h-[240px]">
+                  <div className="space-y-2">
+                    {/* Intermodal Routes Preview */}
+                    {useShippingStore.getState().intermodalRoutes?.slice(0, 2).map(route => (
+                      <div key={route.id} className="border rounded-md p-3">
+                        <div className="flex justify-between">
+                          <h4 className="font-medium">{route.name}</h4>
+                          <Badge variant="outline">${route.totalCost.toFixed(2)}</Badge>
+                        </div>
+                        <div className="text-sm text-muted-foreground mt-1">
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-3.5 w-3.5" />
+                            <span>Total time: {route.totalTime} hours</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Route className="h-3.5 w-3.5" />
+                            <span>Distance: {route.totalDistance} miles</span>
+                          </div>
+                          <div className="flex items-center gap-1 mt-1">
+                            <span className="text-xs">Segments: {route.transportSegments.length}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="text-center mt-3">
+                      <a href="#" className="text-sm text-blue-600 hover:underline" onClick={(e) => {
+                        e.preventDefault();
+                        document.querySelector('[data-value="intermodal"]')?.dispatchEvent(
+                          new MouseEvent('click', { bubbles: true })
+                        );
+                      }}>
+                        View all intermodal routes
+                      </a>
+                    </div>
+                  </div>
+                </ScrollArea>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Transportation Types Table */}
@@ -298,6 +355,10 @@ const ShippingTransportation = () => {
         
         <TabsContent value="transportation">
           <TransportationAvailability fullView={true} />
+        </TabsContent>
+        
+        <TabsContent value="intermodal">
+          <IntermodalTransportation fullView={true} />
         </TabsContent>
         
         <TabsContent value="planning">

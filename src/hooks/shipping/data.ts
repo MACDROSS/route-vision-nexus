@@ -1,5 +1,4 @@
-
-import { FinishedGood, TransportOption, ShippingPlan } from '@/types/shipping';
+import { FinishedGood, TransportOption, ShippingPlan, IntermodalConnection, IntermodalRoute } from '@/types/shipping';
 import { addDays } from 'date-fns';
 
 // Helper function to create a date with just the day part changed
@@ -190,5 +189,70 @@ export const initialShippingPlans: ShippingPlan[] = [
     quantity: 80,
     scheduledDate: createDate(4),
     status: 'planned'
+  }
+];
+
+export const initialIntermodalConnections: IntermodalConnection[] = [
+  {
+    id: 'conn-001',
+    sourceId: 'transport-1',
+    destinationId: 'transport-3',
+    transferTime: 4,
+    transferCost: 350,
+    transferLocation: 'Chicago Intermodal Terminal'
+  },
+  {
+    id: 'conn-002',
+    sourceId: 'transport-3',
+    destinationId: 'transport-5',
+    transferTime: 6,
+    transferCost: 500,
+    transferLocation: 'New York Port Authority'
+  },
+  {
+    id: 'conn-003',
+    sourceId: 'transport-7',
+    destinationId: 'transport-4',
+    transferTime: 3,
+    transferCost: 650,
+    transferLocation: 'Denver Air-Freight Center'
+  },
+  {
+    id: 'conn-004',
+    sourceId: 'transport-6',
+    destinationId: 'transport-8',
+    transferTime: 2,
+    transferCost: 200,
+    transferLocation: 'Atlanta Rail Hub'
+  }
+];
+
+export const initialIntermodalRoutes: IntermodalRoute[] = [
+  {
+    id: 'route-001',
+    name: 'Midwest to East Coast',
+    transportSegments: ['transport-1', 'transport-3', 'transport-5'],
+    connections: ['conn-001', 'conn-002'],
+    totalTime: 96,
+    totalCost: 8200,
+    totalDistance: 1450
+  },
+  {
+    id: 'route-002',
+    name: 'West to Midwest Express',
+    transportSegments: ['transport-7', 'transport-4'],
+    connections: ['conn-003'],
+    totalTime: 18,
+    totalCost: 5000,
+    totalDistance: 1100
+  },
+  {
+    id: 'route-003',
+    name: 'Southern Rail Connection',
+    transportSegments: ['transport-6', 'transport-8'],
+    connections: ['conn-004'],
+    totalTime: 32,
+    totalCost: 3500,
+    totalDistance: 850
   }
 ];

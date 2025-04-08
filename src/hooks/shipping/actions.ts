@@ -1,5 +1,5 @@
 
-import { FinishedGood, TransportOption, ShippingPlan } from '@/types/shipping';
+import { FinishedGood, TransportOption, ShippingPlan, IntermodalConnection, IntermodalRoute } from '@/types/shipping';
 import { ShippingStore } from './types';
 
 export const createShippingActions = (set: any): Pick<ShippingStore, 
@@ -7,7 +7,9 @@ export const createShippingActions = (set: any): Pick<ShippingStore,
   'addTransportOption' | 
   'addShippingPlan' | 
   'removeShippingPlan' | 
-  'updateTransportStatus'> => ({
+  'updateTransportStatus' |
+  'addIntermodalConnection' |
+  'addIntermodalRoute'> => ({
   
   addFinishedGood: (good: FinishedGood) => set((state: ShippingStore) => ({
     finishedGoods: [...state.finishedGoods, good]
@@ -29,5 +31,13 @@ export const createShippingActions = (set: any): Pick<ShippingStore,
     transportOptions: state.transportOptions.map(option =>
       option.id === id ? { ...option, status } : option
     )
+  })),
+  
+  addIntermodalConnection: (connection: IntermodalConnection) => set((state: ShippingStore) => ({
+    intermodalConnections: [...(state.intermodalConnections || []), connection]
+  })),
+  
+  addIntermodalRoute: (route: IntermodalRoute) => set((state: ShippingStore) => ({
+    intermodalRoutes: [...(state.intermodalRoutes || []), route]
   }))
 });

@@ -26,3 +26,22 @@ export interface ShippingPlan {
   scheduledDate: Date;
   status: 'planned' | 'in-transit' | 'delivered';
 }
+
+export interface IntermodalConnection {
+  id: string;
+  sourceId: string;
+  destinationId: string;
+  transferTime: number; // in hours
+  transferCost: number;
+  transferLocation: string;
+}
+
+export interface IntermodalRoute {
+  id: string;
+  name: string;
+  transportSegments: string[]; // IDs of transport options in sequence
+  connections: string[]; // IDs of connections between segments
+  totalTime: number; // in hours
+  totalCost: number;
+  totalDistance: number; // in miles/km
+}
