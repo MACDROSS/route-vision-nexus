@@ -21,9 +21,10 @@ import { Badge } from "@/components/ui/badge";
 interface ProductionTimelineProps {
   processes: ProductionProcess[];
   events: ProcessEvent[];
+  className?: string; // Added className as an optional prop
 }
 
-const ProductionTimeline: React.FC<ProductionTimelineProps> = ({ processes, events }) => {
+const ProductionTimeline: React.FC<ProductionTimelineProps> = ({ processes, events, className }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   
   // Calculate start and end of the current week for the timeline
@@ -72,7 +73,7 @@ const ProductionTimeline: React.FC<ProductionTimelineProps> = ({ processes, even
   });
   
   return (
-    <Card className="h-full">
+    <Card className={className}>
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center justify-between">
           <span className="flex items-center">
