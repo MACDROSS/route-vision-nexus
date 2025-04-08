@@ -1,5 +1,5 @@
 
-import { Bell, User, Search } from "lucide-react";
+import { Bell, User, Search, Settings, LogOut, SwitchCamera } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,11 +9,96 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+// Define user account types and permissions
+interface UserAccount {
+  id: string;
+  name: string;
+  role: string;
+  email: string;
+  initials: string;
+  avatarUrl?: string;
+  accessibleApps: string[];
+}
+
+// Sample user accounts with different permissions
+const userAccounts: UserAccount[] = [
+  {
+    id: "user1",
+    name: "John Doe",
+    role: "Administrator",
+    email: "john.doe@example.com",
+    initials: "JD",
+    avatarUrl: "",
+    accessibleApps: ["all"] // Administrator has access to all apps
+  },
+  {
+    id: "user2",
+    name: "Sarah Chen",
+    role: "Operations Manager",
+    email: "sarah.chen@example.com",
+    initials: "SC",
+    avatarUrl: "",
+    accessibleApps: ["route-optimization", "fleet", "facilities", "personnel", "shipping-transportation"]
+  },
+  {
+    id: "user3",
+    name: "Michael Brown",
+    role: "Production Planner",
+    email: "michael.brown@example.com",
+    initials: "MB",
+    avatarUrl: "",
+    accessibleApps: ["production-planning", "sort-planning", "load-plans"]
+  },
+  {
+    id: "user4",
+    name: "Jessica Kim",
+    role: "Data Analyst",
+    email: "jessica.kim@example.com",
+    initials: "JK",
+    avatarUrl: "",
+    accessibleApps: ["data-catalog", "scenarios", "analytics"]
+  }
+];
 
 const TopNavigation = () => {
+  const [currentUser, setCurrentUser] = useState<UserAccount>(userAccounts[0]);
+  const navigate = useNavigate();
+
+  // Check if current route is accessible to selected user
+  useEffect(() => {
+    const currentPath = window.location.pathname.split('/')[1];
+    
+    // Skip check for root path and paths that everyone can access
+    if (currentPath === '' || currentPath === 'help') {
+      return;
+    }
+
+    // Check if user has access to current path
+    const hasAccess = 
+      currentUser.accessibleApps.includes('all') || 
+      currentUser.accessibleApps.includes(currentPath);
+    
+    // Redirect to dashboard if user doesn't have access
+    if (!hasAccess) {
+      navigate('/');
+    }
+  }, [currentUser, navigate]);
+
+  const handleUserSwitch = (userId: string) => {
+    const selectedUser = userAccounts.find(user => user.id === userId);
+    if (selectedUser) {
+      setCurrentUser(selectedUser);
+    }
+  };
+
   return (
     <div className="border-b border-border h-14 px-4 flex items-center justify-between bg-background">
       <div className="flex items-center w-full max-w-md">
@@ -66,18 +151,28 @@ const TopNavigation = () => {
           </DropdownMenuContent>
         </DropdownMenu>
         
+        {/* User account dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="gap-2">
               <Avatar className="h-8 w-8">
-                <AvatarFallback className="bg-primary text-primary-foreground">JD</AvatarFallback>
+                {currentUser.avatarUrl ? (
+                  <AvatarImage src={currentUser.avatarUrl} alt={currentUser.name} />
+                ) : (
+                  <AvatarFallback className="bg-primary text-primary-foreground">{currentUser.initials}</AvatarFallback>
+                )}
               </Avatar>
-              <span>John Doe</span>
+              <div className="flex flex-col items-start">
+                <span className="text-sm font-medium">{currentUser.name}</span>
+                <span className="text-xs text-muted-foreground">{currentUser.role}</span>
+              </div>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
+            
+            {/* User profile options */}
             <DropdownMenuItem>
               <User className="mr-2 h-4 w-4" />
               <span>Profile</span>
@@ -86,7 +181,33 @@ const TopNavigation = () => {
               <Settings className="mr-2 h-4 w-4" />
               <span>Settings</span>
             </DropdownMenuItem>
+            
             <DropdownMenuSeparator />
+            
+            {/* User switching section */}
+            <DropdownMenuLabel>Switch Account</DropdownMenuLabel>
+            <DropdownMenuRadioGroup value={currentUser.id} onValueChange={handleUserSwitch}>
+              {userAccounts.map((user) => (
+                <DropdownMenuRadioItem key={user.id} value={user.id} className="py-2">
+                  <div className="flex items-center gap-2">
+                    <Avatar className="h-6 w-6">
+                      {user.avatarUrl ? (
+                        <AvatarImage src={user.avatarUrl} alt={user.name} />
+                      ) : (
+                        <AvatarFallback className="bg-primary text-primary-foreground text-xs">{user.initials}</AvatarFallback>
+                      )}
+                    </Avatar>
+                    <div className="flex flex-col">
+                      <span className="text-sm">{user.name}</span>
+                      <span className="text-xs text-muted-foreground">{user.role}</span>
+                    </div>
+                  </div>
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+            
+            <DropdownMenuSeparator />
+            
             <DropdownMenuItem>
               <LogOut className="mr-2 h-4 w-4" />
               <span>Log out</span>
@@ -99,5 +220,3 @@ const TopNavigation = () => {
 };
 
 export default TopNavigation;
-
-import { Settings, LogOut } from "lucide-react";
