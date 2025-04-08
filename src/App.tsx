@@ -22,6 +22,7 @@ import LoadPlans from "./pages/LoadPlans";
 import Fleet from "./pages/Fleet";
 import Facilities from "./pages/Facilities";
 import Personnel from "./pages/Personnel";
+import FacilitySchedule from "./pages/FacilitySchedule";
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
@@ -50,6 +51,7 @@ function App() {
               <Route path="/load-plans" element={<LoadPlans />} />
               <Route path="/fleet" element={<Fleet />} />
               <Route path="/facilities" element={<Facilities />} />
+              <Route path="/facility-schedule" element={<FacilitySchedule />} />
               <Route path="/personnel" element={<Personnel />} />
               <Route path="/help" element={<Help />} />
               <Route path="*" element={<NotFound />} />
