@@ -24,6 +24,17 @@ const createCustomIcon = (color: string) => {
   });
 };
 
+// Create default icon options
+const defaultIconOptions = {
+  iconUrl: iconUrl.toString(),
+  iconRetinaUrl: iconRetinaUrl.toString(),
+  shadowUrl: shadowUrl.toString(),
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+};
+
 const RouteMap = ({
   routes = [],
   vehicles = [],
@@ -39,14 +50,8 @@ const RouteMap = ({
     // Fix for SSR (if used)
     setIsClient(true);
     
-    // Fix for the Leaflet default icon issue
-    delete L.Icon.Default.prototype._getIconUrl;
-    
-    L.Icon.Default.mergeOptions({
-      iconUrl: iconUrl.toString(),
-      iconRetinaUrl: iconRetinaUrl.toString(),
-      shadowUrl: shadowUrl.toString(),
-    });
+    // Set the default icon for Leaflet in a TypeScript-safe way
+    L.Icon.Default.mergeOptions(defaultIconOptions);
     
     return () => {
       // Cleanup if needed
@@ -104,15 +109,7 @@ const RouteMap = ({
           <Marker
             key={vehicle.id}
             position={vehicle.position}
-            icon={L.icon({
-              iconUrl: iconUrl.toString(),
-              iconRetinaUrl: iconRetinaUrl.toString(),
-              shadowUrl: shadowUrl.toString(),
-              iconSize: [25, 41],
-              iconAnchor: [12, 41],
-              popupAnchor: [1, -34],
-              shadowSize: [41, 41],
-            })}
+            icon={L.icon(defaultIconOptions)}
           >
             <Popup>
               <div className="p-2">
