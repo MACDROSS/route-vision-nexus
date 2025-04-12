@@ -46,7 +46,7 @@ const userAccounts: UserAccount[] = [
     email: "sarah.chen@example.com",
     initials: "SC",
     avatarUrl: "",
-    accessibleApps: ["route-optimization", "fleet", "facilities", "personnel", "shipping-transportation"]
+    accessibleApps: ["route-optimization", "fleet", "facilities", "personnel", "shipping-transportation", "long-term-planning"]
   },
   {
     id: "user3",
@@ -55,7 +55,7 @@ const userAccounts: UserAccount[] = [
     email: "michael.brown@example.com",
     initials: "MB",
     avatarUrl: "",
-    accessibleApps: ["production-planning", "sort-planning", "load-plans"]
+    accessibleApps: ["production-planning", "sort-planning", "load-plans", "long-term-planning"]
   },
   {
     id: "user4",
@@ -64,7 +64,7 @@ const userAccounts: UserAccount[] = [
     email: "jessica.kim@example.com",
     initials: "JK",
     avatarUrl: "",
-    accessibleApps: ["data-catalog", "scenarios", "analytics"]
+    accessibleApps: ["data-catalog", "scenarios", "analytics", "long-term-planning"]
   }
 ];
 
@@ -95,10 +95,12 @@ const TopNavigation = () => {
     // Check if user has access to current path
     const hasAccess = 
       currentUser.accessibleApps.includes('all') || 
-      currentUser.accessibleApps.includes(currentPath);
+      currentUser.accessibleApps.includes(currentPath) ||
+      currentPath === 'long-term-planning'; // Add access to the new long-term planning route
     
     // Redirect to dashboard if user doesn't have access
     if (!hasAccess) {
+      console.log(`User ${currentUser.name} doesn't have access to ${currentPath}`);
       navigate('/');
     }
   }, [currentUser, navigate]);
