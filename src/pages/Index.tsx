@@ -17,7 +17,8 @@ import {
   MoveHorizontal,
   PackageOpen,
   HelpCircle,
-  Settings
+  Settings,
+  CalendarClock
 } from "lucide-react";
 import MainLayout from "@/components/layout/MainLayout";
 import StatCard from "@/components/dashboard/StatCard";
@@ -123,6 +124,13 @@ const Index = () => {
       icon: <Users className="h-8 w-8 text-pink-500" />,
       href: "/personnel",
       color: "bg-fuchsia-50"
+    },
+    {
+      title: "Long Term Planning",
+      description: "Adjust schedules and view annualized impacts",
+      icon: <CalendarClock className="h-8 w-8 text-lime-500" />,
+      href: "/long-term-planning",
+      color: "bg-lime-50"
     }
   ];
 

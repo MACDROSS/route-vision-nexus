@@ -30,7 +30,8 @@ import {
   MoveHorizontal,
   Users,
   BoxesIcon,
-  Calendar 
+  Calendar,
+  CalendarClock
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -80,6 +81,11 @@ const Sidebar = () => {
       icon: Shield,
       label: "Compliance",
       href: "/compliance-monitoring"
+    },
+    {
+      icon: CalendarClock,
+      label: "Long Term Planning",
+      href: "/long-term-planning"
     }
   ];
 
