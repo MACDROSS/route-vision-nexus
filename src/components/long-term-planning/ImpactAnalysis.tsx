@@ -172,7 +172,7 @@ const ImpactAnalysis = () => {
             <CardHeader>
               <div className="flex justify-between items-center">
                 <CardTitle>Cost Impact</CardTitle>
-                <Badge variant="outline" className={impacts.costNetChange > 0 ? "bg-red-100" : "bg-green-100"} className="ml-2">
+                <Badge variant="outline" className={impacts.costNetChange > 0 ? "bg-red-100" : "bg-green-100"}>
                   Net Change: ${Math.abs(impacts.costNetChange).toLocaleString()}
                 </Badge>
               </div>
@@ -232,7 +232,7 @@ const ImpactAnalysis = () => {
             <CardHeader>
               <div className="flex justify-between items-center">
                 <CardTitle>Revenue Impact</CardTitle>
-                <Badge variant="outline" className={impacts.revenueNetChange >= 0 ? "bg-green-100" : "bg-red-100"} className="ml-2">
+                <Badge variant="outline" className={impacts.revenueNetChange >= 0 ? "bg-green-100" : "bg-red-100"}>
                   Net Change: ${impacts.revenueNetChange.toLocaleString()}
                 </Badge>
               </div>

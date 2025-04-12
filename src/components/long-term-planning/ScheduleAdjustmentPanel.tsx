@@ -20,7 +20,7 @@ const ScheduleAdjustmentPanel = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [resourceType, setResourceType] = useState<string>("personnel");
   const [resourceId, setResourceId] = useState<string>("");
-  const [changeType, setChangeType] = useState<string>("capacity");
+  const [changeType, setChangeType] = useState<"capacity" | "efficiency" | "availability">("capacity");
   const [adjustmentValue, setAdjustmentValue] = useState<number>(0);
   
   const resources = getResourcesForType(resourceType);
@@ -108,7 +108,10 @@ const ScheduleAdjustmentPanel = () => {
 
             <div>
               <Label htmlFor="change-type">Change Type</Label>
-              <Select value={changeType} onValueChange={setChangeType}>
+              <Select 
+                value={changeType} 
+                onValueChange={(value: "capacity" | "efficiency" | "availability") => setChangeType(value)}
+              >
                 <SelectTrigger id="change-type">
                   <SelectValue placeholder="Select change type" />
                 </SelectTrigger>
